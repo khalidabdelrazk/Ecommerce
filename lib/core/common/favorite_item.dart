@@ -6,7 +6,7 @@ import 'package:colornames/colornames.dart';
 
 import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
-import '../utils/app_routes.dart';
+import '../routing/app_routes.dart';
 import '../utils/app_styles.dart';
 import 'custom_elevated_button.dart';
 

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/app_assets.dart';
 import '../utils/app_colors.dart';
-import '../utils/app_routes.dart';
+import '../routing/app_routes.dart';
 
 class CustomAppBarBadge extends StatelessWidget {
   final int count;
