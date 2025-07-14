@@ -49,4 +49,7 @@ class AppAssets {
   static const String shoesItemImage3 = "assets/images/items/shoes-3.png";
 
   static const String appBarLeading = 'assets/images/Route.png';
+
+  // Splash Screen
+  static const String splashScreenImage = "assets/images/Splash Screen.png";
 }
