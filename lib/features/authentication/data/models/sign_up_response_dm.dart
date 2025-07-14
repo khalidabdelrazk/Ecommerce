@@ -3,7 +3,7 @@ import 'package:ecommerce/features/authentication/domain/entity/sign_up_response
 
 class SignUpResponseDm extends SignUpResponseEntity {
 
-  SignUpResponseDm({super.message, super.user, super.token});
+  SignUpResponseDm({super.message, super.user, super.token,});
 
   SignUpResponseDm.fromJson(Map<String, dynamic> json) {
     if(json["message"] is String) {
