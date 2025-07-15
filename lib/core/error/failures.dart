@@ -4,7 +4,7 @@ abstract class Failures {
 }
 
 class ServerError extends Failures {
-  ServerError(String s, {required super.errorMessage});
+  ServerError({required super.errorMessage});
 }
 
 class NetworkError extends Failures {

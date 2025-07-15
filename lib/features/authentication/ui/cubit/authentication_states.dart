@@ -4,8 +4,8 @@ abstract class AuthenticationStates {}
 class AuthenticationInitialState extends AuthenticationStates {}
 class AuthenticationLoadingState extends AuthenticationStates {}
 class AuthenticationErrorState extends AuthenticationStates {
-  final String? error;
-  AuthenticationErrorState({this.error});
+  final String error;
+  AuthenticationErrorState({required this.error});
 }
 class SignupSuccessState extends AuthenticationStates {
   final SignUpResponseEntity? response;

@@ -3,7 +3,7 @@ import 'package:ecommerce/features/authentication/domain/entity/sign_up_response
 
 class SignUpResponseDm extends SignUpResponseEntity {
 
-  SignUpResponseDm({super.message, super.user, super.token,});
+  SignUpResponseDm({super.message, super.user, super.token, super.errors});
 
   SignUpResponseDm.fromJson(Map<String, dynamic> json) {
     if(json["message"] is String) {
@@ -14,6 +14,9 @@ class SignUpResponseDm extends SignUpResponseEntity {
     }
     if(json["token"] is String) {
       token = json["token"];
+    }
+    if(json["errors"] is Map) {
+      errors = json["errors"] == null ? null : ErrorResponseEntity.fromJson(json["errors"]);
     }
   }
 }
@@ -45,5 +48,21 @@ class UserResponseDm extends UserResponseEntity {
     _data["email"] = email;
     _data["role"] = role;
     return _data;
+  }
+}
+
+class ErrorResponseDm extends ErrorResponseEntity {
+  ErrorResponseDm({super.msg, super.param, super.location});
+
+  ErrorResponseDm.fromJson(Map<String, dynamic> json) {
+    if(json["msg"] is String) {
+      msg = json["msg"];
+    }
+    if(json["param"] is String) {
+      param = json["param"];
+    }
+    if(json["location"] is String) {
+      location = json["location"];
+    }
   }
 }

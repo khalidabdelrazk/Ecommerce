@@ -16,6 +16,8 @@ class AppTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final EdgeInsetsGeometry? contentPadding;
+  final String? Function(String?)? validator; 
+  
 
   const AppTextFormField({
     super.key,
@@ -31,6 +33,7 @@ class AppTextFormField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.contentPadding,
+    this.validator,
   });
 
   @override
@@ -66,6 +69,7 @@ class AppTextFormField extends StatelessWidget {
             letterSpacing: -0.17,
           ),
       keyboardType: keyboardType ?? TextInputType.text,
+      validator: (value) => validator?.call(value),
       textInputAction:
           TextInputAction.done, // Specify the action for the keyboard button
     );

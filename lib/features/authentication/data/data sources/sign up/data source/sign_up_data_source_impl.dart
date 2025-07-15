@@ -15,10 +15,7 @@ class SignUpDataSourceImpl extends SignUpDataSource {
   final ApiManager apiManager;
   final NetworkInfo networkInfo;
 
-  SignUpDataSourceImpl({
-    required this.apiManager,
-    required this.networkInfo,
-  });
+  SignUpDataSourceImpl({required this.apiManager, required this.networkInfo});
 
   @override
   Future<Either<Failures, SignUpResponseDm>> signUp(
@@ -33,21 +30,25 @@ class SignUpDataSourceImpl extends SignUpDataSource {
         path: ApiEndPoints.register,
         data: requestBody.toJson(),
         options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: {'Content-Type': 'application/json'},
+          validateStatus: (status) => true,
         ),
       );
-      if (response.data != null) {
-        return Right(SignUpResponseDm.fromJson(response.data));
-      } else {
-        return Left(ServerError("Empty response from server", errorMessage: "Empty response from server"));
+      SignUpResponseDm registerResponse = SignUpResponseDm.fromJson(
+        response.data,
+      );
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        return Right(registerResponse);
       }
+      return Left(
+        ServerError(
+          errorMessage: registerResponse.errors != null
+              ? "Failed to register: ${registerResponse.errors?.param} ${registerResponse.errors?.msg}"
+              : "Failed to register : ${registerResponse.message}",
+        ),
+      );
     } catch (e) {
-      return Left(ServerError(
-        "Failed to sign up",
-        errorMessage: e.toString(),
-      ));
+      return Left(ServerError(errorMessage: e.toString()));
     }
   }
 }

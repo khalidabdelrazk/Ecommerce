@@ -13,30 +13,17 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
     : super(AuthenticationInitialState());
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
-  bool isPasswordVisible = false;
-  bool isConfirmPasswordVisible = false;
-
-  void togglePasswordVisibility() {
-    isPasswordVisible = !isPasswordVisible;
-    print("Password Visibility: $isPasswordVisible");
-    emit(AuthenticationInitialState());
-  }
-
-  void toggleConfirmPasswordVisibility() {
-    isConfirmPasswordVisible = !isConfirmPasswordVisible;
-    print("Confirm Password Visibility: $isConfirmPasswordVisible");
-    emit(AuthenticationInitialState());
-  }
+  TextEditingController fullNameController = TextEditingController(text: 'Ahmed Abd Al-Muti');
+  TextEditingController emailController = TextEditingController(text: 'khalidaa@gmail.com');
+  TextEditingController passwordController = TextEditingController(text: 'password123@');
+  TextEditingController confirmPasswordController = TextEditingController(text: 'password123@');
+  TextEditingController phoneController = TextEditingController(text: '01010123456');
 
   /// Method to validate the form
   void signup() {
-    if (formKey.currentState?.validate() ?? false) {
+    if (formKey.currentState?.validate() == true) {
       emit(AuthenticationLoadingState());
+
       SignUpRequestBody requestBody = SignUpRequestBody(
         name: fullNameController.text,
         email: emailController.text,

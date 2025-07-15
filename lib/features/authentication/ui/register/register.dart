@@ -9,36 +9,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RegisterScreen extends StatelessWidget {
-  RegisterScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final AuthenticationViewModel authenticationViewModel =
       getIt<AuthenticationViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthenticationViewModel, AuthenticationStates>(
+    return BlocListener(
+
       bloc: authenticationViewModel,
       listener: (context, state) {
         if (state is AuthenticationLoadingState) {
-          DialogUtils.showLoading(context: context);
-        }else if(state is AuthenticationErrorState){
-          DialogUtils.hideLoading(context);
-          DialogUtils.showMessage(
+          return DialogUtils.showLoading(
             context: context,
-            title: 'Error',
-            message: state.error ?? 'An error occurred while signing up.',
-            negAction: () {
-              Navigator.pop(context);
-            },
           );
-        } 
-        else if (state is SignupSuccessState) {
+        } else if (state is AuthenticationErrorState) {
           DialogUtils.hideLoading(context);
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('Sign Up Successful!')));
-          // Navigate to another screen or perform other actions
+          return DialogUtils.showMessage(
+            context: context,
+            message: state.error,
+            title: "Error",
+            posActionName: 'Ok',
+          );
+        } else if(state is SignupSuccessState){
+          DialogUtils.hideLoading(context);
+          return DialogUtils.showMessage(
+            context: context,
+            message: 'Account Created Successfully',
+            title: "Success",
+            posActionName: 'Ok',
+          );
         }
       },
       child: Scaffold(
@@ -61,7 +68,7 @@ class RegisterScreen extends StatelessWidget {
                       width: 100.w,
                     ),
                   ),
-                  const RegisterForm(),
+                  RegisterForm(authenticationViewModel: authenticationViewModel),
                   verticalSpacing(20),
                   
                 ],
