@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,6 @@ class ProductSlider extends StatefulWidget {
 }
 
 class _ProductSliderState extends State<ProductSlider> {
-  final CarouselSliderController _controller = CarouselSliderController();
   late int currentIndex;
 
   @override
@@ -90,6 +88,8 @@ class _ProductSliderState extends State<ProductSlider> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
+                  // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(0.3), // Shadow color
                   spreadRadius: 1,
                   blurRadius: 14,

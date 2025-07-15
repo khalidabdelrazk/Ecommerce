@@ -24,6 +24,7 @@ class AppAssets {
       "assets/icons/favourite_selected.png";
   static const String starIcon = "assets/icons/star.png";
   static const String routeLogo = "assets/icons/route_logo.png";
+  static const String route = "assets/icons/route.png";
   static const String shoppingCart = "assets/icons/shopping_cart.png";
 
   // Announcements Images

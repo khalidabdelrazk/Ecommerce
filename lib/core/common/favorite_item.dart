@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:colornames/colornames.dart';
 
-import '../utils/app_assets.dart';
+import '../helpers/app_assets.dart';
 import '../utils/app_colors.dart';
-import '../utils/app_routes.dart';
+import '../routing/app_routes.dart';
 import '../utils/app_styles.dart';
 import 'custom_elevated_button.dart';
 
+// ignore: must_be_immutable
 class FavoriteItem extends StatefulWidget {
   final Map<String, dynamic> product;
   String heartIcon = AppAssets.selectedFavouriteIcon;
@@ -34,6 +35,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
           height: 135.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
+            // ignore: deprecated_member_use
             border: Border.all(color: AppColors.primaryColor.withOpacity(.3)),
           ),
           child: Row(
@@ -42,6 +44,7 @@ class _FavoriteItemState extends State<FavoriteItem> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16.r),
                   border: Border.all(
+                    // ignore: deprecated_member_use
                     color: AppColors.primaryColor.withOpacity(.6),
                   ),
                 ),

@@ -1,100 +1,77 @@
+import 'package:ecommerce/core/utils/app_colors.dart';
+import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../utils/app_colors.dart';
+class AppTextFormField extends StatelessWidget {
+  final String hintText;
+  final TextStyle? hintStyle;
+  final TextInputType? keyboardType;
+  final InputBorder? focusedBorder;
+  final InputBorder? enabledBorder;
+  final Color? bgColor;
+  final TextEditingController? controller;
+  final bool? obscureText;
+  final TextStyle? style;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final EdgeInsetsGeometry? contentPadding;
+  final String? Function(String?)? validator; 
+  
 
-class CustomTextFormField extends StatefulWidget {
-  Color? filledColor;
-  Color borderColor;
-  TextStyle? hintStyle;
-  String? hintText;
-  Widget? label;
-  TextStyle? labelStyle;
-  Widget? prefixIcon;
-  Widget? suffixIcon;
-  TextEditingController? controller;
-  String? Function(String?)? validator;
-  TextInputType? keyboardType;
-  bool isObscureText;
-  bool isPassword;
-  TextStyle? textStyle;
-  bool readonly;
-
-  CustomTextFormField({
+  const AppTextFormField({
     super.key,
-    this.controller,
-    this.validator,
-    this.hintText,
+    required this.hintText,
     this.hintStyle,
-    this.textStyle,
-    this.label,
-    this.labelStyle,
+    this.keyboardType,
+    this.focusedBorder,
+    this.enabledBorder,
+    this.bgColor,
+    this.controller,
+    this.obscureText,
+    this.style,
     this.prefixIcon,
     this.suffixIcon,
-    this.isObscureText = false,
-    this.isPassword = false,
-    this.filledColor = AppColors.whiteColor,
-    this.keyboardType = TextInputType.text,
-    this.borderColor = AppColors.whiteColor,
-    this.readonly = false,
+    this.contentPadding,
+    this.validator,
   });
 
   @override
-  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
-}
-
-class _CustomTextFormFieldState extends State<CustomTextFormField> {
-  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 12.h, bottom: 20.h),
-      child: TextFormField(
-        style: widget.textStyle,
-        obscureText: widget.isObscureText,
-        keyboardType: widget.keyboardType,
-        controller: widget.controller,
-        validator: widget.validator,
-        readOnly: widget.readonly,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: widget.filledColor,
-          hintText: widget.hintText,
-          hintStyle: widget.hintStyle,
-          label: widget.label,
-          labelStyle: widget.labelStyle,
-          prefixIcon: widget.prefixIcon,
-          suffixIcon:
-              widget.isPassword
-                  ? IconButton(
-                    onPressed: () {
-                      widget.isObscureText = !widget.isObscureText;
-                      setState(() {});
-                    },
-                    icon: Icon(
-                      widget.isObscureText
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                    ),
-                  )
-                  : widget.suffixIcon,
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: widget.borderColor, width: 1),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: widget.borderColor, width: 1),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: AppColors.redColor),
-          ),
-          focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(color: AppColors.redColor),
-          ),
-        ),
+    return TextFormField(
+      decoration: InputDecoration(
+        isDense: true,
+        contentPadding:
+            contentPadding ??
+            EdgeInsets.symmetric(vertical: 20.h, horizontal: 17.w),
+        hintText: hintText,
+        hintStyle:
+            hintStyle ??
+            AppStyles.light18HintText,
+        focusedBorder:
+            focusedBorder ??
+            OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
+        enabledBorder:
+            enabledBorder ??
+            OutlineInputBorder(borderRadius: BorderRadius.circular(16.r)),
+        filled: true,
+        fillColor: AppColors.whiteColor,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
       ),
+      controller: controller,
+      obscureText: obscureText ?? false,
+      style:
+          style ??
+          AppStyles.semi16TextWhite.copyWith(
+            fontSize: 18.sp,
+            color: const Color.fromARGB(255, 0, 0, 0),
+            letterSpacing: -0.17,
+          ),
+      keyboardType: keyboardType ?? TextInputType.text,
+      validator: (value) => validator?.call(value),
+      textInputAction:
+          TextInputAction.done, // Specify the action for the keyboard button
     );
   }
 }
