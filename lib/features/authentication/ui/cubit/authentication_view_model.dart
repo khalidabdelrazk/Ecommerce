@@ -23,7 +23,7 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
   void signup() {
     if (formKey.currentState?.validate() == true) {
       emit(AuthenticationLoadingState());
-
+      // Create the request body
       SignUpRequestBody requestBody = SignUpRequestBody(
         name: fullNameController.text,
         email: emailController.text,
@@ -31,6 +31,7 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
         rePassword: confirmPasswordController.text,
         phone: phoneController.text,
       );
+      // Call the sign-up use case
       signUpUseCase.signUp(requestBody).then((result) {
         result.fold(
           (failure) =>
