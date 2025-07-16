@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce/core/api%20manager/api_endpints.dart';
 import 'package:ecommerce/core/api%20manager/api_manager.dart';
 import 'package:ecommerce/core/error/failures.dart';
-import 'package:ecommerce/features/authentication/data/data%20sources/sign_up/sign_up_data_source.dart';
+import 'package:ecommerce/features/authentication/data/data%20sources/sign%20up/sign_up_data_source.dart';
 import 'package:ecommerce/features/authentication/data/models/authentication_response_dm.dart';
 import 'package:ecommerce/features/authentication/domain/entity/sign_up_request_body.dart';
 import 'package:injectable/injectable.dart';

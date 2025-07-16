@@ -22,6 +22,7 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return Form(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text('Email', style: AppStyles.light16White),
           verticalSpacing(8),
@@ -55,7 +56,7 @@ class _SignInFormState extends State<SignInForm> {
           verticalSpacing(20),
           Align(
             alignment: Alignment.centerRight,
-            child: AppTextButton(text: 'Forget Password?', onPressed: () {}),
+            child: AppTextButton(text: 'Forget Password?', onPressed: () {}, textStyle: AppStyles.light16White),
           ),
         ],
       ),
