@@ -3,8 +3,6 @@ import 'package:ecommerce/features/authentication/ui/sign%20in/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/di/di.dart';
-import 'core/routing/app_route_names.dart';
-import 'core/routing/app_routes.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/my_bloc_observer.dart';
 

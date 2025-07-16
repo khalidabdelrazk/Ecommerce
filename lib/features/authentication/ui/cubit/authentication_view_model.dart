@@ -55,7 +55,7 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
     }
   }
 
-  void signin() {
+  void signIn() {
     if (formKey.currentState?.validate() == true) {
       emit(AuthenticationLoadingState());
       // Create the request body

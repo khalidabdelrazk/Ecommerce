@@ -6,7 +6,6 @@ import 'package:ecommerce/core/error/failures.dart';
 import 'package:ecommerce/features/authentication/data/data%20sources/sign%20in/sign_in_data_source.dart';
 import 'package:ecommerce/features/authentication/data/models/authentication_response_dm.dart';
 import 'package:ecommerce/features/authentication/domain/entity/sign_in_request_body.dart';
-import 'package:ecommerce/features/authentication/domain/entity/sign_up_request_body.dart';
 import 'package:injectable/injectable.dart';
 import 'package:ecommerce/core/network/network_info.dart';
 
@@ -27,7 +26,7 @@ class SignInDataSourceImpl extends SignInDataSource {
     }
     try {
       final response = await apiManager.postData(
-        path: ApiEndPoints.register,
+        path: ApiEndPoints.signIn,
         data: requestBody.toJson(),
         options: Options(
           headers: {'Content-Type': 'application/json'},

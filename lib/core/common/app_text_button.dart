@@ -17,6 +17,11 @@ class AppTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero ,// Remove default padding
+        minimumSize: Size.zero, // Remove minimum size constraints
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // Shrink the tap
+      ),
       child: Text(text, style: textStyle ?? AppStyles.medium14LightPrimary),
     );
   }

@@ -4,6 +4,7 @@ import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/dialog_utils.dart';
 import 'package:ecommerce/features/authentication/ui/cubit/authentication_states.dart';
 import 'package:ecommerce/features/authentication/ui/cubit/authentication_view_model.dart';
+import 'package:ecommerce/features/authentication/ui/sign%20in/widgets/do_not_have_account.dart';
 import 'package:ecommerce/features/authentication/ui/sign%20in/widgets/sign_in_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,7 +40,7 @@ class _SignInState extends State<SignIn> {
           DialogUtils.hideLoading(context);
           return DialogUtils.showMessage(
             context: context,
-            message: 'Account Created Successfully',
+            message: 'Signed in Successfully',
             title: "Success",
             posActionName: 'Ok',
           );
@@ -67,6 +68,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   SignInForm(authenticationViewModel: authenticationViewModel),
                   verticalSpacing(20),
+                  const DoNotHaveAccount(),
                 ],
               ),
             ),

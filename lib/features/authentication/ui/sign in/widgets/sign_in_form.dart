@@ -1,6 +1,8 @@
 import 'package:ecommerce/core/common/app_text_button.dart';
+import 'package:ecommerce/core/common/custom_elevated_button.dart';
 import 'package:ecommerce/core/common/custom_text_form_field.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
+import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:ecommerce/core/utils/validators.dart';
 import 'package:ecommerce/features/authentication/ui/cubit/authentication_view_model.dart';
@@ -19,8 +21,17 @@ class _SignInFormState extends State<SignInForm> {
   bool _isVisible = false;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    widget.authenticationViewModel.emailController.dispose();
+    widget.authenticationViewModel.passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Form(
+      key: widget.authenticationViewModel.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -31,6 +42,7 @@ class _SignInFormState extends State<SignInForm> {
             keyboardType: TextInputType.emailAddress,
             controller: widget.authenticationViewModel.emailController,
             validator: (p0) => AppValidators.validateEmail(p0),
+            
           ),
           verticalSpacing(20),
           Text('Password', style: AppStyles.light16White),
@@ -39,7 +51,7 @@ class _SignInFormState extends State<SignInForm> {
             hintText: 'enter your password',
             keyboardType: TextInputType.visiblePassword,
             controller: widget.authenticationViewModel.passwordController,
-            obscureText: _isVisible,
+            obscureText: !_isVisible,
             validator: AppValidators.validatePassword,
             suffixIcon: GestureDetector(
               onTap: () {
@@ -53,11 +65,18 @@ class _SignInFormState extends State<SignInForm> {
               ),
             ),
           ),
-          verticalSpacing(20),
+          verticalSpacing(16),
           Align(
             alignment: Alignment.centerRight,
             child: AppTextButton(text: 'Forget Password?', onPressed: () {}, textStyle: AppStyles.light16White),
           ),
+          verticalSpacing(16),
+          CustomElevatedButton(
+            text: 'Login',
+            onPressed: () => widget.authenticationViewModel.signIn(),
+            backgroundColor: AppColors.whiteColor,
+            textStyle: AppStyles.medium18Header,
+          )
         ],
       ),
     );
