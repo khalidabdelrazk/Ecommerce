@@ -2,7 +2,8 @@ import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class DoNotHaveAccount extends StatelessWidget {
-  const DoNotHaveAccount({super.key});
+  final VoidCallback? onSignUpPressed;
+  const DoNotHaveAccount({super.key, this.onSignUpPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,7 @@ class DoNotHaveAccount extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         TextButton(
-          onPressed: () {
-            // Navigate to the sign-up screen
-          },
+          onPressed: onSignUpPressed,
           child:  Text(
             'Sign Up',
             style: AppStyles.light16White,

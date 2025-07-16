@@ -2,7 +2,8 @@ import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:flutter/material.dart';
 
 class AlreadyHaveAccount extends StatelessWidget {
-  const AlreadyHaveAccount({super.key});
+  final VoidCallback? onLoginPressed;
+  const AlreadyHaveAccount({super.key, this.onLoginPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,7 @@ class AlreadyHaveAccount extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         TextButton(
-          onPressed: () {
-            // Navigate to the login screen
-          },
+          onPressed: onLoginPressed,
           child: Text(
             'Login',
             style: AppStyles.light16White,

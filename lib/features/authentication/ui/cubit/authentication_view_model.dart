@@ -12,44 +12,45 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
   final SignUpUseCase signUpUseCase;
   final SignInUseCase signInUseCase;
 
-  AuthenticationViewModel({required this.signUpUseCase, required this.signInUseCase})
-    : super(AuthenticationInitialState());
+  AuthenticationViewModel({
+    required this.signUpUseCase,
+    required this.signInUseCase,
+  }) : super(const AuthenticationInitialState(isLogin: true));
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController fullNameController = TextEditingController(
-    text: 'Ahmed Abd Al-Muti',
-  );
-  TextEditingController emailController = TextEditingController(
-    text: 'khalidaa@gmail.com',
-  );
-  TextEditingController passwordController = TextEditingController(
-    text: 'password123@',
-  );
-  TextEditingController confirmPasswordController = TextEditingController(
-    text: 'password123@',
-  );
-  TextEditingController phoneController = TextEditingController(
-    text: '01010123456',
-  );
 
-  /// Method to validate the form
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  bool isLogin = true;
+
+  void toggleLoginSignup() {
+    isLogin = !isLogin;
+    fullNameController.clear();
+    emailController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    phoneController.clear();
+    emit(AuthenticationInitialState(isLogin: isLogin));
+  }
+
   void signup() {
     if (formKey.currentState?.validate() == true) {
-      emit(AuthenticationLoadingState());
-      // Create the request body
-      SignUpRequestBody requestBody = SignUpRequestBody(
+      emit(AuthenticationLoadingState(isLogin: isLogin));
+      final requestBody = SignUpRequestBody(
         name: fullNameController.text,
         email: emailController.text,
         password: passwordController.text,
         rePassword: confirmPasswordController.text,
         phone: phoneController.text,
       );
-      // Call the sign-up use case
       signUpUseCase.signUp(requestBody).then((result) {
         result.fold(
-          (failure) =>
-              emit(AuthenticationErrorState(error: failure.errorMessage)),
-          (success) => emit(AuthenticationSuccessState(response: success)),
+          (failure) => emit(AuthenticationErrorState(error: failure.errorMessage, isLogin: isLogin)),
+          (success) => emit(AuthenticationSuccessState(response: success, isLogin: isLogin)),
         );
       });
     }
@@ -57,18 +58,15 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
 
   void signIn() {
     if (formKey.currentState?.validate() == true) {
-      emit(AuthenticationLoadingState());
-      // Create the request body
-      SignInRequestBody requestBody = SignInRequestBody(
+      emit(AuthenticationLoadingState(isLogin: isLogin));
+      final requestBody = SignInRequestBody(
         email: emailController.text,
         password: passwordController.text,
       );
-      // Call the sign-in use case
       signInUseCase.signIn(requestBody).then((result) {
         result.fold(
-          (failure) =>
-              emit(AuthenticationErrorState(error: failure.errorMessage)),
-          (success) => emit(AuthenticationSuccessState(response: success)),
+          (failure) => emit(AuthenticationErrorState(error: failure.errorMessage, isLogin: isLogin)),
+          (success) => emit(AuthenticationSuccessState(response: success, isLogin: isLogin)),
         );
       });
     }

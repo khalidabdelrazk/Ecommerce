@@ -1,4 +1,3 @@
-import 'package:ecommerce/core/di/di.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/dialog_utils.dart';
@@ -10,27 +9,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignIn extends StatefulWidget {
-  const SignIn({super.key});
-
-  @override
-  State<SignIn> createState() => _SignInState();
-}
-
-class _SignInState extends State<SignIn> {
-  final AuthenticationViewModel authenticationViewModel =
-      getIt<AuthenticationViewModel>();
+class SignIn extends StatelessWidget {
+  final AuthenticationViewModel authenticationViewModel;
+  const SignIn({super.key, required this.authenticationViewModel});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener(
+    return BlocListener<AuthenticationViewModel, AuthenticationStates>(
       bloc: authenticationViewModel,
       listener: (context, state) {
         if (state is AuthenticationLoadingState) {
-          return DialogUtils.showLoading(context: context);
+          DialogUtils.showLoading(context: context);
         } else if (state is AuthenticationErrorState) {
           DialogUtils.hideLoading(context);
-          return DialogUtils.showMessage(
+          DialogUtils.showMessage(
             context: context,
             message: state.error,
             title: "Error",
@@ -38,7 +30,7 @@ class _SignInState extends State<SignIn> {
           );
         } else if (state is AuthenticationSuccessState) {
           DialogUtils.hideLoading(context);
-          return DialogUtils.showMessage(
+          DialogUtils.showMessage(
             context: context,
             message: 'Signed in Successfully',
             title: "Success",
@@ -68,7 +60,9 @@ class _SignInState extends State<SignIn> {
                   ),
                   SignInForm(authenticationViewModel: authenticationViewModel),
                   verticalSpacing(20),
-                  const DoNotHaveAccount(),
+                  DoNotHaveAccount(
+                    onSignUpPressed: authenticationViewModel.toggleLoginSignup,
+                  ),
                 ],
               ),
             ),

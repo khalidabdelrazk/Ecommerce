@@ -1,5 +1,5 @@
 import 'package:ecommerce/core/common/custom_elevated_button.dart';
-import 'package:ecommerce/core/common/custom_text_form_field.dart';
+import 'package:ecommerce/core/common/app_text_form_field.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/app_styles.dart';
@@ -7,26 +7,16 @@ import 'package:ecommerce/core/utils/validators.dart';
 import 'package:ecommerce/features/authentication/ui/cubit/authentication_view_model.dart';
 import 'package:flutter/material.dart';
 
-class RegisterForm extends StatefulWidget {
+class SignUpForm extends StatefulWidget {
   final AuthenticationViewModel authenticationViewModel;
-  const RegisterForm({super.key, required this.authenticationViewModel});
+  const SignUpForm({super.key, required this.authenticationViewModel});
 
   @override
-  State<RegisterForm> createState() => _RegisterFormState();
+  State<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _SignUpFormState extends State<SignUpForm> {
   bool _isVisible = false;
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    widget.authenticationViewModel.fullNameController.dispose();
-    widget.authenticationViewModel.emailController.dispose();
-    widget.authenticationViewModel.passwordController.dispose();
-    widget.authenticationViewModel.confirmPasswordController.dispose();
-    widget.authenticationViewModel.phoneController.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +49,7 @@ class _RegisterFormState extends State<RegisterForm> {
             hintText: 'enter your password',
             keyboardType: TextInputType.visiblePassword,
             controller: widget.authenticationViewModel.passwordController,
-            obscureText: _isVisible,
+            obscureText: !_isVisible,
             validator: AppValidators.validatePassword,
             suffixIcon: GestureDetector(
               onTap: () {
@@ -79,8 +69,9 @@ class _RegisterFormState extends State<RegisterForm> {
           AppTextFormField(
             hintText: 'confirm your password',
             keyboardType: TextInputType.visiblePassword,
-            controller: widget.authenticationViewModel.confirmPasswordController,
-            obscureText: _isVisible,
+            controller:
+                widget.authenticationViewModel.confirmPasswordController,
+            obscureText: !_isVisible,
             validator: (val) => AppValidators.validateConfirmPassword(
               val,
               widget.authenticationViewModel.passwordController.text,

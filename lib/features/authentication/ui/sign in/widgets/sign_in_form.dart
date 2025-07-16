@@ -1,6 +1,6 @@
 import 'package:ecommerce/core/common/app_text_button.dart';
 import 'package:ecommerce/core/common/custom_elevated_button.dart';
-import 'package:ecommerce/core/common/custom_text_form_field.dart';
+import 'package:ecommerce/core/common/app_text_form_field.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/app_styles.dart';
@@ -21,14 +21,6 @@ class _SignInFormState extends State<SignInForm> {
   bool _isVisible = false;
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    widget.authenticationViewModel.emailController.dispose();
-    widget.authenticationViewModel.passwordController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Form(
       key: widget.authenticationViewModel.formKey,
@@ -42,7 +34,7 @@ class _SignInFormState extends State<SignInForm> {
             keyboardType: TextInputType.emailAddress,
             controller: widget.authenticationViewModel.emailController,
             validator: (p0) => AppValidators.validateEmail(p0),
-            
+            style: AppStyles.regular14Textdark,
           ),
           verticalSpacing(20),
           Text('Password', style: AppStyles.light16White),
