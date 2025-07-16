@@ -63,11 +63,7 @@ class AppTextFormField extends StatelessWidget {
       obscureText: obscureText ?? false,
       style:
           style ??
-          AppStyles.semi16TextWhite.copyWith(
-            fontSize: 18.sp,
-            color: const Color.fromARGB(255, 0, 0, 0),
-            letterSpacing: -0.17,
-          ),
+          AppStyles.regular14Textdark,
       keyboardType: keyboardType ?? TextInputType.text,
       validator: (value) => validator?.call(value),
       textInputAction:

@@ -1,13 +1,24 @@
-import 'package:ecommerce/features/authentication/domain/entity/sign_up_response_entity.dart';
+import 'package:ecommerce/features/authentication/domain/entity/authentication_response_entity.dart';
 
-abstract class AuthenticationStates {}
-class AuthenticationInitialState extends AuthenticationStates {}
-class AuthenticationLoadingState extends AuthenticationStates {}
+abstract class AuthenticationStates {
+  final bool isLogin;
+  const AuthenticationStates({required this.isLogin});
+}
+
+class AuthenticationInitialState extends AuthenticationStates {
+  const AuthenticationInitialState({required super.isLogin});
+}
+
+class AuthenticationLoadingState extends AuthenticationStates {
+  const AuthenticationLoadingState({required super.isLogin});
+}
+
 class AuthenticationErrorState extends AuthenticationStates {
   final String error;
-  AuthenticationErrorState({required this.error});
+  const AuthenticationErrorState({required this.error, required super.isLogin});
 }
-class SignupSuccessState extends AuthenticationStates {
-  final SignUpResponseEntity? response;
-  SignupSuccessState({this.response});
+
+class AuthenticationSuccessState extends AuthenticationStates {
+  final AuthenticationResponseEntity? response;
+  const AuthenticationSuccessState({this.response, required super.isLogin});
 }

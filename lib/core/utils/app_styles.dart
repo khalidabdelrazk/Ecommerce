@@ -9,6 +9,11 @@ class AppStyles {
     fontWeight: FontWeight.w400,
     color: AppColors.primaryDark,
   );
+  static TextStyle regular14Textdark = GoogleFonts.poppins(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: AppColors.blackColor,
+  );
   static TextStyle regular11SalePrice = GoogleFonts.poppins(
     fontSize: 12,
     fontWeight: FontWeight.w400,

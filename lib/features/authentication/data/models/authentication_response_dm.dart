@@ -1,39 +1,45 @@
+import 'package:ecommerce/features/authentication/domain/entity/authentication_response_entity.dart';
 
-import 'package:ecommerce/features/authentication/domain/entity/sign_up_response_entity.dart';
+class AuthenticationResponseDm extends AuthenticationResponseEntity {
+  AuthenticationResponseDm({
+    super.message,
+    super.user,
+    super.token,
+    super.errors,
+  });
 
-class SignUpResponseDm extends SignUpResponseEntity {
-
-  SignUpResponseDm({super.message, super.user, super.token, super.errors});
-
-  SignUpResponseDm.fromJson(Map<String, dynamic> json) {
-    if(json["message"] is String) {
+  AuthenticationResponseDm.fromJson(Map<String, dynamic> json) {
+    if (json["message"] is String) {
       message = json["message"];
     }
-    if(json["user"] is Map) {
-      user = json["user"] == null ? null : UserResponseDm.fromJson(json["user"]);
+    if (json["user"] is Map) {
+      user = json["user"] == null
+          ? null
+          : UserResponseDm.fromJson(json["user"]);
     }
-    if(json["token"] is String) {
+    if (json["token"] is String) {
       token = json["token"];
     }
-    if(json["errors"] is Map) {
-      errors = json["errors"] == null ? null : ErrorResponseEntity.fromJson(json["errors"]);
+    if (json["errors"] is Map) {
+      errors = json["errors"] == null
+          ? null
+          : ErrorResponseEntity.fromJson(json["errors"]);
     }
   }
 }
 
 // ignore: non_constant_identifier_names
 class UserResponseDm extends UserResponseEntity {
-
   UserResponseDm({super.name, super.email, super.role});
 
   UserResponseDm.fromJson(Map<String, dynamic> json) {
-    if(json["name"] is String) {
+    if (json["name"] is String) {
       name = json["name"];
     }
-    if(json["email"] is String) {
+    if (json["email"] is String) {
       email = json["email"];
     }
-    if(json["role"] is String) {
+    if (json["role"] is String) {
       role = json["role"];
     }
   }
@@ -55,13 +61,13 @@ class ErrorResponseDm extends ErrorResponseEntity {
   ErrorResponseDm({super.msg, super.param, super.location});
 
   ErrorResponseDm.fromJson(Map<String, dynamic> json) {
-    if(json["msg"] is String) {
+    if (json["msg"] is String) {
       msg = json["msg"];
     }
-    if(json["param"] is String) {
+    if (json["param"] is String) {
       param = json["param"];
     }
-    if(json["location"] is String) {
+    if (json["location"] is String) {
       location = json["location"];
     }
   }

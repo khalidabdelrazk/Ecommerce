@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:ecommerce/core/routing/app_route_names.dart';
+import 'package:ecommerce/core/routing/app_routes.dart';
+import 'package:ecommerce/features/authentication/ui/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/di/di.dart';
-import 'core/routing/app_route_names.dart';
-import 'core/routing/app_routes.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/my_bloc_observer.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         routes: Routes.routes,
-        initialRoute: AppRoutes.registerRoute,
+        initialRoute: AppRoutes.authenticationRoute,
         // home: const Register(),
       ),
     );
