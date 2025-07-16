@@ -1,4 +1,6 @@
+import 'package:ecommerce/features/authentication/domain/entity/sign_in_request_body.dart';
 import 'package:ecommerce/features/authentication/domain/entity/sign_up_request_body.dart';
+import 'package:ecommerce/features/authentication/domain/use%20case/sign_in_use_case.dart';
 import 'package:ecommerce/features/authentication/domain/use%20case/sign_up_use_case.dart';
 import 'package:ecommerce/features/authentication/ui/cubit/authentication_states.dart';
 import 'package:flutter/material.dart';
@@ -8,16 +10,27 @@ import 'package:injectable/injectable.dart';
 @injectable
 class AuthenticationViewModel extends Cubit<AuthenticationStates> {
   final SignUpUseCase signUpUseCase;
+  final SignInUseCase signInUseCase;
 
-  AuthenticationViewModel({required this.signUpUseCase})
+  AuthenticationViewModel({required this.signUpUseCase, required this.signInUseCase})
     : super(AuthenticationInitialState());
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController fullNameController = TextEditingController(text: 'Ahmed Abd Al-Muti');
-  TextEditingController emailController = TextEditingController(text: 'khalidaa@gmail.com');
-  TextEditingController passwordController = TextEditingController(text: 'password123@');
-  TextEditingController confirmPasswordController = TextEditingController(text: 'password123@');
-  TextEditingController phoneController = TextEditingController(text: '01010123456');
+  TextEditingController fullNameController = TextEditingController(
+    text: 'Ahmed Abd Al-Muti',
+  );
+  TextEditingController emailController = TextEditingController(
+    text: 'khalidaa@gmail.com',
+  );
+  TextEditingController passwordController = TextEditingController(
+    text: 'password123@',
+  );
+  TextEditingController confirmPasswordController = TextEditingController(
+    text: 'password123@',
+  );
+  TextEditingController phoneController = TextEditingController(
+    text: '01010123456',
+  );
 
   /// Method to validate the form
   void signup() {
@@ -36,7 +49,26 @@ class AuthenticationViewModel extends Cubit<AuthenticationStates> {
         result.fold(
           (failure) =>
               emit(AuthenticationErrorState(error: failure.errorMessage)),
-          (success) => emit(SignupSuccessState(response: success)),
+          (success) => emit(AuthenticationSuccessState(response: success)),
+        );
+      });
+    }
+  }
+
+  void signin() {
+    if (formKey.currentState?.validate() == true) {
+      emit(AuthenticationLoadingState());
+      // Create the request body
+      SignInRequestBody requestBody = SignInRequestBody(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      // Call the sign-in use case
+      signInUseCase.signIn(requestBody).then((result) {
+        result.fold(
+          (failure) =>
+              emit(AuthenticationErrorState(error: failure.errorMessage)),
+          (success) => emit(AuthenticationSuccessState(response: success)),
         );
       });
     }

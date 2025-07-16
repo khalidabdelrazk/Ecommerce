@@ -1,17 +1,26 @@
-class SignUpResponseEntity {
+class AuthenticationResponseEntity {
   String? message;
   UserResponseEntity? user;
   String? token;
   ErrorResponseEntity? errors;
 
-  SignUpResponseEntity({this.message, this.user, this.token, this.errors});
+  AuthenticationResponseEntity({
+    this.message,
+    this.user,
+    this.token,
+    this.errors,
+  });
 
-  factory SignUpResponseEntity.fromJson(Map<String, dynamic> json) {
-    return SignUpResponseEntity(
+  factory AuthenticationResponseEntity.fromJson(Map<String, dynamic> json) {
+    return AuthenticationResponseEntity(
       message: json['message'],
-      user: json['user'] != null ? UserResponseEntity.fromJson(json['user']) : null,
+      user: json['user'] != null
+          ? UserResponseEntity.fromJson(json['user'])
+          : null,
       token: json['token'],
-      errors: json['errors'] != null ? ErrorResponseEntity.fromJson(json['errors']) : null,
+      errors: json['errors'] != null
+          ? ErrorResponseEntity.fromJson(json['errors'])
+          : null,
     );
   }
 }
@@ -31,6 +40,7 @@ class UserResponseEntity {
     );
   }
 }
+
 class ErrorResponseEntity {
   String? msg;
   String? param;

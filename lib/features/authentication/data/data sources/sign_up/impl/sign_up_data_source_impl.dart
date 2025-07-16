@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce/core/api%20manager/api_endpints.dart';
 import 'package:ecommerce/core/api%20manager/api_manager.dart';
 import 'package:ecommerce/core/error/failures.dart';
-import 'package:ecommerce/features/authentication/data/data%20sources/sign%20up/sign_up_data_source.dart';
-import 'package:ecommerce/features/authentication/data/models/sign_up_response_dm.dart';
+import 'package:ecommerce/features/authentication/data/data%20sources/sign_up/sign_up_data_source.dart';
+import 'package:ecommerce/features/authentication/data/models/authentication_response_dm.dart';
 import 'package:ecommerce/features/authentication/domain/entity/sign_up_request_body.dart';
 import 'package:injectable/injectable.dart';
 
@@ -18,7 +18,7 @@ class SignUpDataSourceImpl extends SignUpDataSource {
   SignUpDataSourceImpl({required this.apiManager, required this.networkInfo});
 
   @override
-  Future<Either<Failures, SignUpResponseDm>> signUp(
+  Future<Either<Failures, AuthenticationResponseDm>> signUp(
     SignUpRequestBody requestBody,
   ) async {
     final isConnected = await networkInfo.isConnected;
@@ -34,9 +34,8 @@ class SignUpDataSourceImpl extends SignUpDataSource {
           validateStatus: (status) => true,
         ),
       );
-      SignUpResponseDm registerResponse = SignUpResponseDm.fromJson(
-        response.data,
-      );
+      AuthenticationResponseDm registerResponse =
+          AuthenticationResponseDm.fromJson(response.data);
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         return Right(registerResponse);
       }
