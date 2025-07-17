@@ -30,6 +30,16 @@ import '../../features/authentication/domain/use%20case/sign_up_use_case.dart'
     as _i642;
 import '../../features/authentication/ui/cubit/authentication_view_model.dart'
     as _i239;
+import '../../features/home%20tab/data/data%20source/categories/categories_data_source.dart'
+    as _i339;
+import '../../features/home%20tab/data/data%20source/categories/categories_data_source_impl.dart'
+    as _i795;
+import '../../features/home%20tab/data/repository/home_repository_impl.dart'
+    as _i999;
+import '../../features/home%20tab/domain/repository/home_repository.dart'
+    as _i738;
+import '../../features/home%20tab/domain/use%20case/categories_use_case.dart'
+    as _i340;
 import '../../features/home%20tab/ui/cubit/home_view_model.dart' as _i263;
 import '../../features/root/ui/cubit/root_view_model.dart' as _i21;
 import '../api%20manager/api_manager.dart' as _i949;
@@ -43,7 +53,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.factory<_i21.RootViewModel>(() => _i21.RootViewModel());
-    gh.factory<_i263.HomeViewModel>(() => _i263.HomeViewModel());
     gh.singleton<_i949.ApiManager>(() => _i949.ApiManager());
     gh.lazySingleton<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl());
     gh.lazySingleton<_i638.SignInDataSource>(
@@ -54,6 +63,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i601.SignUpDataSource>(
       () => _i319.SignUpDataSourceImpl(
+        apiManager: gh<_i949.ApiManager>(),
+        networkInfo: gh<_i932.NetworkInfo>(),
+      ),
+    );
+    gh.factory<_i339.CategoriesDataSource>(
+      () => _i795.CategoriesDataSourceImpl(
         apiManager: gh<_i949.ApiManager>(),
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
@@ -70,11 +85,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i642.SignUpUseCase>(
       () => _i642.SignUpUseCase(gh<_i797.AuthenticationRepository>()),
     );
+    gh.factory<_i738.HomeRepository>(
+      () => _i999.HomeRepositoryImpl(
+        categoriesDataSource: gh<_i339.CategoriesDataSource>(),
+      ),
+    );
     gh.factory<_i239.AuthenticationViewModel>(
       () => _i239.AuthenticationViewModel(
         signUpUseCase: gh<_i642.SignUpUseCase>(),
         signInUseCase: gh<_i205.SignInUseCase>(),
       ),
+    );
+    gh.factory<_i340.CategoriesUseCase>(
+      () => _i340.CategoriesUseCase(homeRepository: gh<_i738.HomeRepository>()),
+    );
+    gh.factory<_i263.HomeViewModel>(
+      () =>
+          _i263.HomeViewModel(categoriesUseCase: gh<_i340.CategoriesUseCase>()),
     );
     return this;
   }

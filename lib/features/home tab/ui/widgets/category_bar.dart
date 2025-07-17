@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryBar extends StatelessWidget {
   const CategoryBar({super.key});
@@ -13,8 +14,8 @@ class CategoryBar extends StatelessWidget {
           return Column(
             children: [
               Container(
-                width: 100,
-                height: 100,
+                width: 100.w,
+                height: 100.h,
                 margin: const EdgeInsets.all(8),
                 decoration:const BoxDecoration(
                   shape: BoxShape.circle,
