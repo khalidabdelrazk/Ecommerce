@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme,
         routes: Routes.routes,
-        initialRoute: AppRoutes.authenticationRoute,
+        initialRoute: AppRoutes.root,
         // home: const Register(),
       ),
     );
