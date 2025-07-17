@@ -22,7 +22,7 @@ class CategoriesDataSourceImpl extends CategoriesDataSource {
       return Left(NetworkError(errorMessage: "No Internet Connection"));
     }
     try {
-      final response = await apiManager.postData(
+      final response = await apiManager.getData(
         path: ApiEndPoints.getAllCategories,
         options: Options(
           headers: {'Content-Type': 'application/json'},
@@ -40,6 +40,7 @@ class CategoriesDataSourceImpl extends CategoriesDataSource {
         ),
       );
     } catch (e) {
+      print("Error in CategoriesDataSourceImpl: $e");
       return Left(ServerError(errorMessage: e.toString()));
     }
   }

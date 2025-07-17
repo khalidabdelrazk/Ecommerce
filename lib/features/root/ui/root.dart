@@ -78,7 +78,7 @@ class Root extends StatelessWidget {
               : Colors.transparent,
           child: Image.asset(
             isSelected ? selectedIcon : unselectedIcon,
-            width: 24.w,
+            // width: 24.w,
             height: 24.h,
           ),
         ),

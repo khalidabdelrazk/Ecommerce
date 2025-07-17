@@ -1,4 +1,5 @@
 import 'package:ecommerce/core/helpers/app_assets.dart';
+import 'package:ecommerce/features/home%20tab/domain/entity/categories_response_entity.dart';
 import 'package:ecommerce/features/home%20tab/domain/use%20case/categories_use_case.dart';
 import 'package:ecommerce/features/home%20tab/ui/cubit/home_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,8 @@ class HomeViewModel extends Cubit<HomeStates> {
   final CategoriesUseCase categoriesUseCase;
 
   HomeViewModel({required this.categoriesUseCase}) : super(HomeInitialState());
+
+  List<CategoryEntity> categories = [];
 
   //todo: hold data - handle logic
   List<String> images = [
@@ -28,6 +31,7 @@ class HomeViewModel extends Cubit<HomeStates> {
           emit(CategoryErrorState(failures: failure));
         },
         (categoriesResponse) {
+          categories = categoriesResponse.data ?? [];
           emit(CategorySuccessState(responseEntity: categoriesResponse));
         },
       );

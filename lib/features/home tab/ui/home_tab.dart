@@ -5,6 +5,7 @@ import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:ecommerce/features/home%20tab/ui/cubit/home_view_model.dart';
 import 'package:ecommerce/features/home%20tab/ui/widgets/category_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,18 +21,21 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: Column(
-        children: [
-          verticalSpacing(20),
-          _buildAnnouncement(images: viewModel.images),
-          verticalSpacing(20),
-          _titleAndViewAll(title: "Categories",),
-          verticalSpacing(0),
-          const CategoryBar(),
-          verticalSpacing(20),
-        ],
+    return BlocProvider(
+      create: (context) => viewModel,
+      child: Scaffold(
+        backgroundColor: AppColors.whiteColor,
+        body: Column(
+          children: [
+            verticalSpacing(20),
+            _buildAnnouncement(images: viewModel.images),
+            verticalSpacing(20),
+            _titleAndViewAll(title: "Categories"),
+            verticalSpacing(0),
+            CategoryBar(homeViewModel: viewModel),
+            verticalSpacing(20),
+          ],
+        ),
       ),
     );
   }
@@ -52,6 +56,7 @@ class _HomeTabState extends State<HomeTab> {
       }).toList(),
     );
   }
+
   Widget _titleAndViewAll({
     required String title,
     VoidCallback? onViewAllPressed,
@@ -62,7 +67,13 @@ class _HomeTabState extends State<HomeTab> {
         Text(title, style: AppStyles.semi20Primary.copyWith(fontSize: 18.sp)),
         TextButton(
           onPressed: onViewAllPressed,
-          child: Text('View All', style: AppStyles.semi20Primary.copyWith(fontSize: 14.sp,fontWeight: FontWeight.w400)),
+          child: Text(
+            'View All',
+            style: AppStyles.semi20Primary.copyWith(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ),
       ],
     );
