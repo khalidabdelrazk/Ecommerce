@@ -30,6 +30,7 @@ import '../../features/authentication/domain/use%20case/sign_up_use_case.dart'
     as _i642;
 import '../../features/authentication/ui/cubit/authentication_view_model.dart'
     as _i239;
+import '../../features/root/ui/cubit/root_view_model.dart' as _i21;
 import '../api%20manager/api_manager.dart' as _i949;
 import '../network/network_info.dart' as _i932;
 
@@ -40,6 +41,7 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.factory<_i21.RootViewModel>(() => _i21.RootViewModel());
     gh.singleton<_i949.ApiManager>(() => _i949.ApiManager());
     gh.lazySingleton<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl());
     gh.lazySingleton<_i638.SignInDataSource>(
