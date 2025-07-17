@@ -1,3 +1,4 @@
+import 'package:ecommerce/features/home%20tab/ui/home_tab.dart';
 import 'package:ecommerce/features/root/ui/cubit/root_states.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,7 @@ class RootViewModel extends Cubit<RootStates> {
   //todo: hold data - handle logic
   int selectedIndex = 0;
   List<Widget> bodyList = const [
-    Scaffold(
-      body: Center(child: Text('Home')),
-    ),
+    HomeTab(),
     Scaffold(
       body: Center(child: Text('Products')),
     ),
