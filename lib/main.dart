@@ -1,41 +1,67 @@
-import 'package:ecommerce/core/routing/app_route_names.dart';
-import 'package:ecommerce/core/routing/app_routes.dart';
-import 'package:flutter/foundation.dart';
+import 'package:ecommerce/core/cache/shared_preference_utils.dart';
+import 'package:ecommerce/features/ui/pages/cart_screen/cubit/cart_view_model.dart';
+import 'package:ecommerce/features/ui/pages/home_screen/tabs/products_tab/cubit/product_tab_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'core/di/di.dart';
+import 'core/utils/app_routes.dart';
 import 'core/utils/app_theme.dart';
 import 'core/utils/my_bloc_observer.dart';
+import 'features/ui/auth/login/login_screen.dart';
+import 'features/ui/auth/register/register_screen.dart';
+import 'features/ui/pages/cart_screen/cart_screen.dart';
+import 'features/ui/pages/home_screen/home_screen.dart';
+import 'features/ui/pages/product_details_screen/product_details_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = MyBlocObserver();
   configureDependencies();
-  HydratedBloc.storage = await HydratedStorage.build(
-    storageDirectory: kIsWeb
-        ? HydratedStorageDirectory.web
-        : HydratedStorageDirectory((await getTemporaryDirectory()).path),
-  );
-  runApp(const MyApp());
+  Bloc.observer = MyBlocObserver();
+  await SharedPreferenceUtils.init();
+  String routeName;
+  var token = SharedPreferenceUtils.getData(key: 'token');
+  if (token == null) {
+    routeName = AppRoutes.loginRoute;
+  } else {
+    //todo: token != null => user
+    routeName = AppRoutes.homeRoute;
+  }
+  runApp(MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<ProductTabViewModel>()),
+        BlocProvider(create: (context) => getIt<CartViewModel>()),
+      ],
+      child: MyApp(
+        routeName: routeName,
+      )));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  String routeName;
 
-  // This widget is the root of your application.
+  MyApp({required this.routeName});
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(430, 932),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.lightTheme,
-        routes: Routes.routes,
-        initialRoute: AppRoutes.root,
-        // home: const Register(),
-      ),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: routeName,
+          routes: {
+            AppRoutes.loginRoute: (context) => LoginScreen(),
+            AppRoutes.registerRoute: (context) => RegisterScreen(),
+            AppRoutes.homeRoute: (context) => HomeScreen(),
+            AppRoutes.cartRoute: (context) => CartScreen(),
+            AppRoutes.productRoute: (context) => ProductDetailsScreen(),
+          },
+          theme: AppTheme.lightTheme,
+        );
+      },
     );
   }
 }

@@ -3,33 +3,44 @@ import 'package:flutter/material.dart';
 import 'app_styles.dart';
 
 class DialogUtils {
-  static void showLoading({required BuildContext context}) {
+  static void showLoading(
+      {required BuildContext context, required String message}) {
     showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return const Center(child: CircularProgressIndicator());
-      },
-    );
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Row(
+              children: [
+                const CircularProgressIndicator(),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    message,
+                    style: AppStyles.medium18Header,
+                  ),
+                )
+              ],
+            ),
+          );
+        });
   }
 
   static void hideLoading(BuildContext context) {
     Navigator.pop(context);
   }
 
-  static void showMessage({
-    required BuildContext context,
-    required String message,
-    String? title,
-    String? posActionName,
-    Function? posAction,
-    String? negActionName,
-    Function? negAction,
-  }) {
+  static void showMessage(
+      {required BuildContext context,
+      required String message,
+      String? title,
+      String? posActionName,
+      Function? posAction,
+      String? negActionName,
+      Function? negAction}) {
     List<Widget> actions = [];
     if (posActionName != null) {
-      actions.add(
-        TextButton(
+      actions.add(TextButton(
           onPressed: () {
             Navigator.pop(context);
             // if(posAction != null){
@@ -39,40 +50,31 @@ class DialogUtils {
           },
           child: Text(
             posActionName,
-            style: AppStyles.light16White.copyWith(color: Colors.black),
-          ),
-        ),
-      );
+            style: AppStyles.medium18Header,
+          )));
     }
     if (negActionName != null) {
-      actions.add(
-        TextButton(
+      actions.add(TextButton(
           onPressed: () {
             Navigator.pop(context);
             negAction?.call();
           },
-          child: Text(
-            negActionName,
-            style: AppStyles.medium18Header.copyWith(color: Colors.black),
-          ),
-        ),
-      );
+          child: Text(negActionName, style: AppStyles.medium18Header)));
     }
     showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          content: Text(
-            message,
-            style: AppStyles.light16White.copyWith(color: Colors.black),
-          ),
-          title: Text(
-            title ?? '',
-            style: AppStyles.light16White.copyWith(color: Colors.black),
-          ),
-          actions: actions,
-        );
-      },
-    );
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(
+              message,
+              style: AppStyles.medium18Header,
+            ),
+            title: Text(
+              title ?? '',
+              style: AppStyles.medium18Header,
+            ),
+            actions: actions,
+          );
+        });
   }
 }
