@@ -1,7 +1,5 @@
-
-
 import 'package:ecommerce/core/error/failures.dart';
-import 'package:ecommerce/features/home%20tab/domain/entity/categories_response_entity.dart';
+import 'package:ecommerce/features/home%20tab/domain/entity/categories_or_brands_response_entity.dart';
 
 abstract class HomeStates {}
 
@@ -16,21 +14,20 @@ class CategoryErrorState extends HomeStates {
 }
 
 class CategorySuccessState extends HomeStates {
-  CategoriesResponseEntity responseEntity;
+  CategoriesOrBrandsResponseEntity responseEntity;
 
   CategorySuccessState({required this.responseEntity});
 }
 
-// class BrandLoadingState extends HomeStates {}
+class BrandsLoadingState extends HomeStates{}
+class BrandsErrorState extends HomeStates {
+  Failures failures;
 
-// class BrandErrorState extends HomeStates {
-//   Failures failures;
+  BrandsErrorState({required this.failures});
+}
 
-//   BrandErrorState({required this.failures});
-// }
+class BrandSuccessState extends HomeStates {
+  CategoriesOrBrandsResponseEntity responseEntity;
 
-// class BrandSuccessState extends HomeStates {
-//   CategoryOrBrandResponseEntity responseEntity;
-
-//   BrandSuccessState({required this.responseEntity});
-// }
+  BrandSuccessState({required this.responseEntity});
+}

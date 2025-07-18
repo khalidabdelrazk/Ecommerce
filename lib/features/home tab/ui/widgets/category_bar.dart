@@ -1,22 +1,33 @@
-import 'package:ecommerce/core/common/custom_image.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
-import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:ecommerce/core/utils/network_error_widget.dart';
 import 'package:ecommerce/features/home%20tab/ui/cubit/home_states.dart';
 import 'package:ecommerce/features/home%20tab/ui/cubit/home_view_model.dart';
+import 'package:ecommerce/features/home%20tab/ui/widgets/category_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CategoryBar extends StatelessWidget {
+class CategoryBar extends StatefulWidget {
   final HomeViewModel homeViewModel;
   const CategoryBar({super.key, required this.homeViewModel});
 
   @override
+  State<CategoryBar> createState() => _CategoryBarState();
+}
+
+class _CategoryBarState extends State<CategoryBar> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.homeViewModel.state is! CategorySuccessState) {
+    widget.homeViewModel.getCategories();
+  }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    print(homeViewModel.categories.length);
     return BlocBuilder<HomeViewModel, HomeStates>(
-      bloc: homeViewModel..getCategories(),
+      bloc: widget.homeViewModel,
       builder: (context, state) {
         if (state is CategoryLoadingState) {
           return SizedBox(
@@ -28,151 +39,35 @@ class CategoryBar extends StatelessWidget {
           return NetworkErrorWidget(
             errorMsg: state.failures.errorMessage,
             large: false,
+            onTap: () async => widget.homeViewModel.getCategories(),
           );
         }
+
+        final categories = widget.homeViewModel.categories;
+
+        if (categories.isEmpty) {
+          return const Center(child: Text("No Categories Found"));
+        }
+
         return SizedBox(
           height: 285.h,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: homeViewModel.categories.length.isOdd
-                ? homeViewModel.categories.length ~/ 2 + 1
-                : homeViewModel.categories.length ~/ 2,
+            itemCount: (categories.length / 2).ceil(),
             itemBuilder: (context, index) {
-              if(index == homeViewModel.categories.length ~/ 2 + 1) {
-                return Column(
-                  children: [
-                    Container(
-                      width: 100.w,
-                      height: 100.h,
-                      margin: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.blue,
-                      ),
-                      child: CustomImage(
-                        homeViewModel.categories.last.image ?? '',
-                        width: 100.w,
-                        height: 100.h,
-                        fit: BoxFit.cover,
-                        radius: 50.r,
-                        isNetwork: true,
-                      ),
-                    ),
-                    Text(
-                      homeViewModel.categories.last.name ?? '',
-                      style: AppStyles.regular12Text,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                );
-              }
-              int categoryIndex = index * 2;
-              final category = homeViewModel.categories;
+              int firstIndex = index * 2;
+              int secondIndex = firstIndex + 1;
               return Column(
                 children: [
-                  Container(
-                    width: 100.w,
-                    height: 100.h,
-                    margin: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
-                    ),
-                    child: CustomImage(
-                      category[categoryIndex].image ?? '',
-                      width: 100.w,
-                      height: 100.h,
-                      fit: BoxFit.cover,
-                      radius: 50.r,
-                      isNetwork: true,
-                    ),
-                  ),
-                  Text(
-                    category[categoryIndex].name ?? '',
-                    style: AppStyles.regular12Text,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  CategoryItem(category: categories[firstIndex]),
                   verticalSpacing(8),
-                  Container(
-                    width: 100.w,
-                    height: 100.h,
-                    margin: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
-                    ),
-                    child: CustomImage(
-                      category[categoryIndex + 1].image ?? '',
-                      width: 100.w,
-                      height: 100.h,
-                      fit: BoxFit.cover,
-                      radius: 50.r,
-                      isNetwork: true,
-                    ),
-                  ),
-                  Text(
-                    category[categoryIndex + 1].name ?? '',
-                    style: AppStyles.regular12Text,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  if (secondIndex < categories.length)
+                    CategoryItem(category: categories[secondIndex]),
                 ],
               );
             },
           ),
         );
-        /* return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: homeViewModel.categories.map((category) {
-              int index = 0;
-              index += 2;
-              return Column(
-                children: [
-                  Container(
-                    width: 100.w,
-                    height: 100.h,
-                    margin: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
-                    ),
-
-                    child: CustomImage(
-                      homeViewModel.categories.isNotEmpty
-                          ? homeViewModel.categories[index - 1].image ?? ''
-                          : '',
-                      width: 100.w,
-                      height: 100.h,
-                      fit: BoxFit.cover,
-                      radius: 50.r,
-                      isNetwork: true,
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    alignment: Alignment.center,
-                    margin: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
-                    ),
-                    child: CustomImage(
-                      homeViewModel.categories.isNotEmpty
-                          ? homeViewModel.categories[index - 2].image ?? ''
-                          : '',
-                      width: 100.w,
-                      height: 100.h,
-                      fit: BoxFit.cover,
-                      radius: 50.r,
-                      isNetwork: true,
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
-          ),
-        );*/
       },
     );
   }

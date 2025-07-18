@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
-
 @injectable
 class RootViewModel extends Cubit<RootStates> {
   RootViewModel() : super(RootInitialState());
@@ -13,19 +12,15 @@ class RootViewModel extends Cubit<RootStates> {
   int selectedIndex = 0;
   List<Widget> bodyList = const [
     HomeTab(),
-    Scaffold(
-      body: Center(child: Text('Products')),
-    ),
-    Scaffold(
-      body: Center(child: Text('Favorites')),
-    ),
-    Scaffold(
-      body: Center(child: Text('User')),
-    ),
+    Scaffold(body: Center(child: Text('Products'))),
+    Scaffold(body: Center(child: Text('Favorites'))),
+    Scaffold(body: Center(child: Text('User'))),
   ];
 
   void bottomNavOnTap(int index) {
-    selectedIndex = index;
-    emit(RootChangeSelectedIndexState());
+    if (selectedIndex != index) {
+      selectedIndex = index;
+      emit(RootChangeSelectedIndexState());
+    }
   }
 }

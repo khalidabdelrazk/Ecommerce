@@ -5,12 +5,12 @@ import 'package:ecommerce/features/home%20tab/domain/repository/home_repository.
 import 'package:injectable/injectable.dart';
 
 @injectable
-class CategoriesUseCase {
+class BrandsUseCase {
   final HomeRepository homeRepository;
 
-  CategoriesUseCase({required this.homeRepository});
+  BrandsUseCase({required this.homeRepository});
 
   Future<Either<Failures, CategoriesOrBrandsResponseEntity>> invoke() {
-    return homeRepository.getCategories();
+    return homeRepository.getBrands();
   }
 }
