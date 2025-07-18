@@ -3,6 +3,7 @@ import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/app_styles.dart';
 import 'package:ecommerce/features/home%20tab/ui/cubit/home_view_model.dart';
+import 'package:ecommerce/features/home%20tab/ui/widgets/brands_bar.dart';
 import 'package:ecommerce/features/home%20tab/ui/widgets/category_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,15 +26,22 @@ class _HomeTabState extends State<HomeTab> {
       create: (context) => viewModel,
       child: Scaffold(
         backgroundColor: AppColors.whiteColor,
-        body: Column(
-          children: [
-            verticalSpacing(20),
-            _buildAnnouncement(images: viewModel.images),
-            verticalSpacing(20),
-            _titleAndViewAll(title: "Categories"),
-            verticalSpacing(0),
-            CategoryBar(homeViewModel: viewModel),
-            verticalSpacing(20),
+        body: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  verticalSpacing(20),
+                  _buildAnnouncement(images: viewModel.images),
+                  verticalSpacing(20),
+                  _titleAndViewAll(title: "Categories"),
+                  CategoryBar(homeViewModel: viewModel),
+                  verticalSpacing(20),
+                  _titleAndViewAll(title: "Brands"),
+                  BrandsBar(homeViewModel: viewModel),
+                ],
+              ),
+            ),
           ],
         ),
       ),

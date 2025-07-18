@@ -30,6 +30,10 @@ import '../../features/authentication/domain/use%20case/sign_up_use_case.dart'
     as _i642;
 import '../../features/authentication/ui/cubit/authentication_view_model.dart'
     as _i239;
+import '../../features/home%20tab/data/data%20source/brands/brands_data_source.dart'
+    as _i869;
+import '../../features/home%20tab/data/data%20source/brands/brands_data_source_impl.dart'
+    as _i435;
 import '../../features/home%20tab/data/data%20source/categories/categories_data_source.dart'
     as _i339;
 import '../../features/home%20tab/data/data%20source/categories/categories_data_source_impl.dart'
@@ -38,6 +42,8 @@ import '../../features/home%20tab/data/repository/home_repository_impl.dart'
     as _i999;
 import '../../features/home%20tab/domain/repository/home_repository.dart'
     as _i738;
+import '../../features/home%20tab/domain/use%20case/brands_use_case.dart'
+    as _i908;
 import '../../features/home%20tab/domain/use%20case/categories_use_case.dart'
     as _i340;
 import '../../features/home%20tab/ui/cubit/home_view_model.dart' as _i263;
@@ -73,6 +79,12 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
     );
+    gh.factory<_i869.BrandsDataSource>(
+      () => _i435.BrandsDataSourceImpl(
+        apiManager: gh<_i949.ApiManager>(),
+        networkInfo: gh<_i932.NetworkInfo>(),
+      ),
+    );
     gh.factory<_i797.AuthenticationRepository>(
       () => _i233.AuthRepositoryImpl(
         signUpDataSource: gh<_i601.SignUpDataSource>(),
@@ -88,6 +100,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i738.HomeRepository>(
       () => _i999.HomeRepositoryImpl(
         categoriesDataSource: gh<_i339.CategoriesDataSource>(),
+        brandsDataSource: gh<_i869.BrandsDataSource>(),
       ),
     );
     gh.factory<_i239.AuthenticationViewModel>(
@@ -99,9 +112,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i340.CategoriesUseCase>(
       () => _i340.CategoriesUseCase(homeRepository: gh<_i738.HomeRepository>()),
     );
+    gh.factory<_i908.BrandsUseCase>(
+      () => _i908.BrandsUseCase(homeRepository: gh<_i738.HomeRepository>()),
+    );
     gh.factory<_i263.HomeViewModel>(
-      () =>
-          _i263.HomeViewModel(categoriesUseCase: gh<_i340.CategoriesUseCase>()),
+      () => _i263.HomeViewModel(
+        brandsUseCase: gh<_i908.BrandsUseCase>(),
+        categoriesUseCase: gh<_i340.CategoriesUseCase>(),
+      ),
     );
     return this;
   }

@@ -7,21 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CategoryBar extends StatefulWidget {
+class BrandsBar extends StatefulWidget {
   final HomeViewModel homeViewModel;
-  const CategoryBar({super.key, required this.homeViewModel});
+  const BrandsBar({super.key, required this.homeViewModel});
 
   @override
-  State<CategoryBar> createState() => _CategoryBarState();
+  State<BrandsBar> createState() => _BrandsBarState();
 }
 
-class _CategoryBarState extends State<CategoryBar> {
+class _BrandsBarState extends State<BrandsBar> {
   @override
   void initState() {
     super.initState();
-    if (widget.homeViewModel.state is! CategorySuccessState) {
-      widget.homeViewModel.getCategories();
-    }
+    if (widget.homeViewModel.state is! BrandSuccessState) {
+      widget.homeViewModel.getBrands();
+  }
   }
 
   @override
@@ -29,40 +29,33 @@ class _CategoryBarState extends State<CategoryBar> {
     return BlocBuilder<HomeViewModel, HomeStates>(
       bloc: widget.homeViewModel,
       builder: (context, state) {
-        // if (state is CategoryLoadingState || state is! CategoryErrorState || state is! CategorySuccessState) {
-        //   return SizedBox(
-        //     height: 285.h,
-        //     width: double.infinity,
-        //     child: const Center(child: CircularProgressIndicator()),
-        //   );
-        // }
-        if (state is CategoryErrorState) {
+        if (state is BrandsErrorState) {
           return NetworkErrorWidget(
             errorMsg: state.failures.errorMessage,
             large: false,
-            onTap: () async => widget.homeViewModel.getCategories(),
+            onTap: () async => widget.homeViewModel.getBrands(),
           );
-        } else if (state is CategorySuccessState || widget.homeViewModel.categories.isNotEmpty) {
-          final categories = widget.homeViewModel.categories;
+        } else if (state is BrandSuccessState || widget.homeViewModel.brands.isNotEmpty) {
+          final brands = widget.homeViewModel.brands;
 
-          if (categories.isEmpty) {
-            return const Center(child: Text("No Categories Found"));
+          if (brands.isEmpty) {
+            return const Center(child: Text("No Brands Found"));
           }
 
           return SizedBox(
             height: 285.h,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: (categories.length / 2).ceil(),
+              itemCount: (brands.length / 2).ceil(),
               itemBuilder: (context, index) {
                 int firstIndex = index * 2;
                 int secondIndex = firstIndex + 1;
                 return Column(
                   children: [
-                    CategoryOrBrandsItem(category: categories[firstIndex]),
+                    CategoryOrBrandsItem(category: brands[firstIndex]),
                     verticalSpacing(8),
-                    if (secondIndex < categories.length)
-                      CategoryOrBrandsItem(category: categories[secondIndex]),
+                    if (secondIndex < brands.length)
+                      CategoryOrBrandsItem(category: brands[secondIndex]),
                   ],
                 );
               },

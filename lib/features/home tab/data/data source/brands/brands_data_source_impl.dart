@@ -23,7 +23,7 @@ class BrandsDataSourceImpl extends BrandsDataSource {
     }
     try {
       final response = await apiManager.getData(
-        path: ApiEndPoints.getAllCategories,
+        path: ApiEndPoints.getAllBrands,
         options: Options(
           headers: {'Content-Type': 'application/json'},
           validateStatus: (status) => true,

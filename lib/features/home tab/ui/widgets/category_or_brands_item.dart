@@ -4,9 +4,9 @@ import 'package:ecommerce/features/home%20tab/domain/entity/categories_or_brands
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CategoryItem extends StatelessWidget {
+class CategoryOrBrandsItem extends StatelessWidget {
   final CategoryOrBrandsEntity category;
-  const CategoryItem({super.key, required this.category});
+  const CategoryOrBrandsItem({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {

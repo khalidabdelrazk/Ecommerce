@@ -43,6 +43,7 @@ class HomeViewModel extends HydratedCubit<HomeStates> {
       result.fold((failure) => emit(BrandsErrorState(failures: failure)), (
         brandsResponse,
       ) {
+        brands = brandsResponse.data ?? [];
         emit(BrandSuccessState(responseEntity: brandsResponse));
       });
     });
