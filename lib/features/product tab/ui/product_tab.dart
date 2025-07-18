@@ -6,7 +6,6 @@ import 'package:ecommerce/features/product%20tab/ui/widgets/category_items.dart'
 import 'package:ecommerce/features/product%20tab/ui/widgets/category_tabs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductTab extends StatefulWidget {
   const ProductTab({super.key});

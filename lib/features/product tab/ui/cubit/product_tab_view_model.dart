@@ -20,6 +20,8 @@ class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
     'Baby & Toys',
   ];
 
+  String categoryId = '64089fe824b25627a25315d1';
+
   void selectCategory(String category) {
     if (selectedCategory != category) {
       selectedCategory = category;
