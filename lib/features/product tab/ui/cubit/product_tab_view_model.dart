@@ -8,55 +8,62 @@ import 'package:injectable/injectable.dart';
 class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
   final GetCategoriesAndBrandsUseCase getCategoriesAndBrandsUseCase;
   ProductTabViewModel(this.getCategoriesAndBrandsUseCase)
-    : super(ProductTabInitialState());
+      : super(ProductTabInitialState());
 
-  // Initial category and items
   String selectedCategory = '';
   List<String> items = [];
-  final List<String> categories = [];
   List<CategoryAndBrandsEntity> categories2 = [];
+  bool isHidden = false;
 
-  String categoryId = '64089fe824b25627a25315d1';
-
-  void selectCategory(String category) {
-    if (selectedCategory != category) {
-      selectedCategory = category;
-      fetchItems(category);
-      emit(CategorySelectedState(selectedCategory));
-      // Simulate a delay for loading state
-      Future.delayed(const Duration(seconds: 1), () {
-        emit(ProductTabInitialState());
-      });
-    }
+  /// Toggle Category Sidebar Visibility
+  void toggleVisibility() {
+    isHidden = !isHidden;
+    emit(ProductTabInitialState());
   }
 
+  /// Select Category and Fetch its Items
+  void selectCategory(String category) {
+    if (selectedCategory == category) return;
+    selectedCategory = category;
+    emit(CategorySelectedState(selectedCategory));
+    fetchItems();
+  }
+
+  /// Fetch Categories and Brands (only if not cached)
   void getCategoriesAndBrands() {
-    // if (state is ProductTabsSuccessState && categories2.isNotEmpty) return;
+    if (categories2.isNotEmpty) {
+      emit(ProductTabsSuccessState(
+        responseEntity: ProductTabsResponseEntity(data: categories2),
+      ));
+      return;
+    }
+
     emit(ProductTabLoadingState());
     getCategoriesAndBrandsUseCase.invoke().then((result) {
-      result.fold((failure) => emit(ProductTabsErrorState(failures: failure)), (
-        response,
-      ) {
-        categories2 = (response.data ?? []).cast<CategoryAndBrandsEntity>();
-        selectedCategory = categories2.isNotEmpty ? categories2.first.name ?? '' : '';
-        print(selectedCategory);
-        fetchItems(selectedCategory);
-        emit(ProductTabsSuccessState(responseEntity: response));
-      });
+      result.fold(
+        (failure) => emit(ProductTabsErrorState(failures: failure)),
+        (response) {
+          categories2 = (response.data ?? []).cast<CategoryAndBrandsEntity>();
+          selectedCategory = categories2.isNotEmpty ? categories2.first.name ?? '' : '';
+          emit(ProductTabsSuccessState(responseEntity: response));
+        },
+      );
     });
   }
 
-  void fetchItems(String category) {
-    items = List.generate(10, (index) => '$category Item $index');
+  /// Fake Items Fetching based on Category
+  void fetchItems() {
+    items = List.generate(10, (index) => '$selectedCategory Item $index');
   }
 
- @override
+  /// Persist Data
+  @override
   Map<String, dynamic>? toJson(ProductTabStates state) {
-    if (state is ProductTabsSuccessState) {
+    if (categories2.isNotEmpty) {
       return {
-        'categories': state.responseEntity.data
-            ?.map((e) => e.toJson())
-            .toList(),
+        'categories': categories2.map((e) => e.toJson()).toList(),
+        'selectedCategory': selectedCategory,
+        'isHidden': isHidden,
       };
     }
     return null;
@@ -65,20 +72,19 @@ class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
   @override
   ProductTabStates? fromJson(Map<String, dynamic> json) {
     try {
-      if (json.containsKey('categories')) {
-        final cachedCategories = (json['categories'] as List)
-            .map((e) => CategoryAndBrandsEntity.fromJson(e))
-            .toList();
-        categories2 = cachedCategories;
-        return ProductTabsSuccessState(
-          responseEntity: ProductTabsResponseEntity(
-            data: cachedCategories,
-          ),
-        );
-      }
+      final cachedCategories = (json['categories'] as List)
+          .map((e) => CategoryAndBrandsEntity.fromJson(e))
+          .toList();
+
+      categories2 = cachedCategories;
+      selectedCategory = json['selectedCategory'] ?? '';
+      isHidden = json['isHidden'] ?? false;
+
+      return ProductTabsSuccessState(
+        responseEntity: ProductTabsResponseEntity(data: categories2),
+      );
     } catch (_) {
       return null;
     }
-    return null;
   }
 }
