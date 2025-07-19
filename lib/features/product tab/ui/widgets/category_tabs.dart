@@ -1,9 +1,10 @@
 import 'package:ecommerce/core/utils/app_colors.dart';
+import 'package:ecommerce/features/product%20tab/domain/entity/product_tabs_response_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CategoryTabs extends StatelessWidget {
-  final List<String> categories;
+  final List<CategoryAndBrandsEntity> categories;
   final String selectedCategory;
   final ValueChanged<String> onCategorySelected;
 
@@ -35,9 +36,9 @@ class CategoryTabs extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) {
           final category = categories[index];
-          final isSelected = selectedCategory == category;
+          final isSelected = selectedCategory == category.name;
           return GestureDetector(
-            onTap: () => onCategorySelected(category),
+            onTap: () => onCategorySelected(category.name ?? ''),
             child: Container(
               color: isSelected ? Colors.white : Colors.transparent,
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
@@ -48,7 +49,7 @@ class CategoryTabs extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      category ?? " ",
+                      category.name ?? " ",
                       style: TextStyle(
                         color: Colors.blue[900],
                         fontWeight: isSelected

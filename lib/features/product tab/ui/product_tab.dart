@@ -21,7 +21,7 @@ class _ProductTabState extends State<ProductTab> {
   void initState() {
     super.initState();
     // Fetch initial items for the default category
-    widget.productTabViewModel.fetchItems(widget.productTabViewModel.selectedCategory);
+    widget.productTabViewModel.getCategoriesAndBrands();
   }
 
   @override
@@ -33,7 +33,7 @@ class _ProductTabState extends State<ProductTab> {
             return Row(
               children: [
                 CategoryTabs(
-                  categories: widget.productTabViewModel.categories,
+                  categories: widget.productTabViewModel.categories2,
                   selectedCategory: widget.productTabViewModel.selectedCategory,
                   onCategorySelected: (category) {
                     widget.productTabViewModel.selectCategory(category);

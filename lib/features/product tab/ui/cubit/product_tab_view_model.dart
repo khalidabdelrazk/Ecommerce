@@ -11,7 +11,7 @@ class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
     : super(ProductTabInitialState());
 
   // Initial category and items
-  String selectedCategory = 'Men’s Fashion';
+  String selectedCategory = '';
   List<String> items = [];
   final List<String> categories = [];
   List<CategoryAndBrandsEntity> categories2 = [];
@@ -30,14 +30,17 @@ class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
     }
   }
 
-  void getBrands() {
-    if (state is ProductTabsSuccessState || categories2.isNotEmpty) return;
+  void getCategoriesAndBrands() {
+    // if (state is ProductTabsSuccessState && categories2.isNotEmpty) return;
     emit(ProductTabLoadingState());
     getCategoriesAndBrandsUseCase.invoke().then((result) {
       result.fold((failure) => emit(ProductTabsErrorState(failures: failure)), (
         response,
       ) {
         categories2 = (response.data ?? []).cast<CategoryAndBrandsEntity>();
+        selectedCategory = categories2.isNotEmpty ? categories2.first.name ?? '' : '';
+        print(selectedCategory);
+        fetchItems(selectedCategory);
         emit(ProductTabsSuccessState(responseEntity: response));
       });
     });
@@ -47,17 +50,35 @@ class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
     items = List.generate(10, (index) => '$category Item $index');
   }
 
-  @override
+ @override
   Map<String, dynamic>? toJson(ProductTabStates state) {
-    if (state is ProductTabInitialState) {
-      return {'selectedCategory': selectedCategory};
+    if (state is ProductTabsSuccessState) {
+      return {
+        'categories': state.responseEntity.data
+            ?.map((e) => e.toJson())
+            .toList(),
+      };
     }
     return null;
   }
 
   @override
-  ProductTabStates fromJson(Map<String, dynamic> json) {
-    selectedCategory = json['selectedCategory'] ?? 'Men’s Fashion';
-    return ProductTabInitialState();
+  ProductTabStates? fromJson(Map<String, dynamic> json) {
+    try {
+      if (json.containsKey('categories')) {
+        final cachedCategories = (json['categories'] as List)
+            .map((e) => CategoryAndBrandsEntity.fromJson(e))
+            .toList();
+        categories2 = cachedCategories;
+        return ProductTabsSuccessState(
+          responseEntity: ProductTabsResponseEntity(
+            data: cachedCategories,
+          ),
+        );
+      }
+    } catch (_) {
+      return null;
+    }
+    return null;
   }
 }
