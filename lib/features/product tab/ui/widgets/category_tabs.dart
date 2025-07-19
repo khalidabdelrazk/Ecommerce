@@ -19,7 +19,7 @@ class CategoryTabs extends StatelessWidget {
     return Container(
       width: 137.w,
       decoration: BoxDecoration(
-        color: Color(0xffEDF1F5),
+        color: const Color(0xffEDF1F5),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(8.r),
           bottomLeft: Radius.circular(8.r),
@@ -48,7 +48,7 @@ class CategoryTabs extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      category,
+                      category ?? " ",
                       style: TextStyle(
                         color: Colors.blue[900],
                         fontWeight: isSelected

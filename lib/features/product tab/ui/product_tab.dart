@@ -8,46 +8,42 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductTab extends StatefulWidget {
-  const ProductTab({super.key});
+  final ProductTabViewModel productTabViewModel;
+  const ProductTab({super.key, required this.productTabViewModel});
 
   @override
   State<ProductTab> createState() => _ProductTabState();
 }
 
 class _ProductTabState extends State<ProductTab> {
-  final ProductTabViewModel productTabViewModel = getIt<ProductTabViewModel>();
 
   @override
   void initState() {
     super.initState();
     // Fetch initial items for the default category
-    productTabViewModel.fetchItems(productTabViewModel.selectedCategory);
+    widget.productTabViewModel.fetchItems(widget.productTabViewModel.selectedCategory);
   }
 
   @override
-Widget build(BuildContext context) {
-  return BlocProvider(
-    create: (context) => productTabViewModel,
-    child: Scaffold(
-      backgroundColor: AppColors.whiteColor,
-      body: BlocBuilder<ProductTabViewModel, ProductTabStates>(
-        builder: (context, state) {
-          return Row(
-            children: [
-              CategoryTabs(
-                categories: productTabViewModel.categories,
-                selectedCategory: productTabViewModel.selectedCategory,
-                onCategorySelected: (category) {
-                  productTabViewModel.selectCategory(category);
-                },
-              ),
-              CategoryItems(items: productTabViewModel.items),
-            ],
-          );
-        },
-      ),
-    ),
-  );
-}
-
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: AppColors.whiteColor,
+        body: BlocBuilder<ProductTabViewModel, ProductTabStates>(
+          builder: (context, state) {
+            return Row(
+              children: [
+                CategoryTabs(
+                  categories: widget.productTabViewModel.categories,
+                  selectedCategory: widget.productTabViewModel.selectedCategory,
+                  onCategorySelected: (category) {
+                    widget.productTabViewModel.selectCategory(category);
+                  },
+                ),
+                CategoryItems(items: widget.productTabViewModel.items),
+              ],
+            );
+          },
+        ),
+      );;
+  }
 }

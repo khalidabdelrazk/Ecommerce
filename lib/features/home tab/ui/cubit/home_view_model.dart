@@ -16,6 +16,7 @@ class HomeViewModel extends HydratedCubit<HomeStates> {
 
   List<CategoryOrBrandsEntity> categories = [];
   List<CategoryOrBrandsEntity> brands = [];
+  List<CategoryOrBrandsEntity> all = [];
 
   List<String> images = [
     AppAssets.announcement1,
@@ -31,6 +32,7 @@ class HomeViewModel extends HydratedCubit<HomeStates> {
         categoriesResponse,
       ) {
         categories = categoriesResponse.data ?? [];
+        all.addAll(categories);
         emit(CategorySuccessState(responseEntity: categoriesResponse));
       });
     });
@@ -44,6 +46,7 @@ class HomeViewModel extends HydratedCubit<HomeStates> {
         brandsResponse,
       ) {
         brands = brandsResponse.data ?? [];
+        all.addAll(brands);
         emit(BrandSuccessState(responseEntity: brandsResponse));
       });
     });
