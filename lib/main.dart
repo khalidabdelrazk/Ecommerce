@@ -39,9 +39,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  String routeName;
+  final String routeName;
 
-  MyApp({required this.routeName});
+  const MyApp({super.key, required this.routeName});
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

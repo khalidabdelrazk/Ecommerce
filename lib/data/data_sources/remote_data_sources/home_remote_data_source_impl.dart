@@ -22,6 +22,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.other) ||
+          connectivityResult.contains(ConnectivityResult.ethernet) ||
+          connectivityResult.contains(ConnectivityResult.bluetooth) ||
+          !connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.contains(ConnectivityResult.vpn) ||
           connectivityResult.contains(ConnectivityResult.mobile)) {
         //todo: internet
         var response =
@@ -50,6 +55,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.other) ||
+          connectivityResult.contains(ConnectivityResult.ethernet) ||
+          connectivityResult.contains(ConnectivityResult.bluetooth) ||
+          !connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.contains(ConnectivityResult.vpn) ||
           connectivityResult.contains(ConnectivityResult.mobile)) {
         //todo: internet
         var response =
@@ -77,6 +87,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.other) ||
+          connectivityResult.contains(ConnectivityResult.ethernet) ||
+          connectivityResult.contains(ConnectivityResult.bluetooth) ||
+          !connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.contains(ConnectivityResult.vpn) ||
           connectivityResult.contains(ConnectivityResult.mobile)) {
         //todo: internet
         var response =
@@ -105,6 +120,11 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.other) ||
+          connectivityResult.contains(ConnectivityResult.ethernet) ||
+          connectivityResult.contains(ConnectivityResult.bluetooth) ||
+          !connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.contains(ConnectivityResult.vpn) ||
           connectivityResult.contains(ConnectivityResult.mobile)) {
         //todo: internet
         var token = SharedPreferenceUtils.getData(key: 'token');

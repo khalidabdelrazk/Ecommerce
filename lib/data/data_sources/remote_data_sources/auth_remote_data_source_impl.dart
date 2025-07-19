@@ -22,6 +22,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.other) ||
+          connectivityResult.contains(ConnectivityResult.ethernet) ||
+          connectivityResult.contains(ConnectivityResult.bluetooth) ||
+          !connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.contains(ConnectivityResult.vpn) ||
           connectivityResult.contains(ConnectivityResult.mobile)) {
         //todo: internet
         var response =
@@ -56,6 +61,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final List<ConnectivityResult> connectivityResult =
           await Connectivity().checkConnectivity();
       if (connectivityResult.contains(ConnectivityResult.wifi) ||
+          connectivityResult.contains(ConnectivityResult.other) ||
+          connectivityResult.contains(ConnectivityResult.ethernet) ||
+          connectivityResult.contains(ConnectivityResult.bluetooth) ||
+          !connectivityResult.contains(ConnectivityResult.none) ||
+          connectivityResult.contains(ConnectivityResult.vpn) ||
           connectivityResult.contains(ConnectivityResult.mobile)) {
         //todo: internet
         var response =
