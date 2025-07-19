@@ -47,6 +47,16 @@ import '../../features/home%20tab/domain/use%20case/brands_use_case.dart'
 import '../../features/home%20tab/domain/use%20case/categories_use_case.dart'
     as _i340;
 import '../../features/home%20tab/ui/cubit/home_view_model.dart' as _i263;
+import '../../features/product%20tab/data/data%20source/tabs/product_tabs_data_source.dart'
+    as _i9;
+import '../../features/product%20tab/data/data%20source/tabs/product_tabs_data_source_impl.dart'
+    as _i687;
+import '../../features/product%20tab/data/repository/product_tab_repository_impl.dart'
+    as _i842;
+import '../../features/product%20tab/domain/repository/product_tab_repository.dart'
+    as _i847;
+import '../../features/product%20tab/domain/use_case/get_categories_and_brands_use_case.dart'
+    as _i414;
 import '../../features/product%20tab/ui/cubit/product_tab_view_model.dart'
     as _i726;
 import '../../features/root/ui/cubit/root_view_model.dart' as _i21;
@@ -61,7 +71,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     gh.factory<_i21.RootViewModel>(() => _i21.RootViewModel());
-    gh.factory<_i726.ProductTabViewModel>(() => _i726.ProductTabViewModel());
     gh.singleton<_i949.ApiManager>(() => _i949.ApiManager());
     gh.lazySingleton<_i932.NetworkInfo>(() => _i932.NetworkInfoImpl());
     gh.lazySingleton<_i638.SignInDataSource>(
@@ -72,6 +81,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i601.SignUpDataSource>(
       () => _i319.SignUpDataSourceImpl(
+        apiManager: gh<_i949.ApiManager>(),
+        networkInfo: gh<_i932.NetworkInfo>(),
+      ),
+    );
+    gh.factory<_i9.ProductTabsDataSource>(
+      () => _i687.ProductTabsDataSourceImpl(
         apiManager: gh<_i949.ApiManager>(),
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
@@ -94,6 +109,11 @@ extension GetItInjectableX on _i174.GetIt {
         signInDataSource: gh<_i638.SignInDataSource>(),
       ),
     );
+    gh.factory<_i847.ProductTabRepository>(
+      () => _i842.ProductTabRepositoryImpl(
+        productTabsDataSource: gh<_i9.ProductTabsDataSource>(),
+      ),
+    );
     gh.factory<_i205.SignInUseCase>(
       () => _i205.SignInUseCase(gh<_i797.AuthenticationRepository>()),
     );
@@ -112,11 +132,20 @@ extension GetItInjectableX on _i174.GetIt {
         signInUseCase: gh<_i205.SignInUseCase>(),
       ),
     );
+    gh.factory<_i414.GetCategoriesAndBrandsUseCase>(
+      () => _i414.GetCategoriesAndBrandsUseCase(
+        productTabRepository: gh<_i847.ProductTabRepository>(),
+      ),
+    );
     gh.factory<_i340.CategoriesUseCase>(
       () => _i340.CategoriesUseCase(homeRepository: gh<_i738.HomeRepository>()),
     );
     gh.factory<_i908.BrandsUseCase>(
       () => _i908.BrandsUseCase(homeRepository: gh<_i738.HomeRepository>()),
+    );
+    gh.factory<_i726.ProductTabViewModel>(
+      () =>
+          _i726.ProductTabViewModel(gh<_i414.GetCategoriesAndBrandsUseCase>()),
     );
     gh.factory<_i263.HomeViewModel>(
       () => _i263.HomeViewModel(
