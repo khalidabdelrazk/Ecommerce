@@ -59,7 +59,16 @@ class ProductEntity {
     );
   }
 
-  
+  toJson() {
+    return {
+      '_id': id,
+      'description': description,
+      'price': price,
+      'imageCover': imageCover,
+      'images': images,
+      'ratingsAverage': ratingsAverage,
+    };
+  }
 }
 
 class SubcategoryEntity extends CategoryOrBrandsEntity {

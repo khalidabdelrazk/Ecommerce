@@ -36,8 +36,8 @@ class _CategoryItemsState extends State<CategoryItems> {
                 widget
                         .productTabViewModel
                         .items[widget.productTabViewModel.selectedCategory.name]
-                        ?.id
-                        ?.toString() ??
+                        ?.description
+                         ??
                     "",
               ),
             ),

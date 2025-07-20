@@ -22,15 +22,12 @@ class GetProductsRequestBody {
   });
   Map<String, dynamic> toJson() {
     return {
-      'limit': limit,
-      'sort': sort,
-      'fields': fields,
-      'page': page,
-      'keyword': keyword,
-      'brand': brand,
-      'price[gte]': priceGte,
-      'price[lte]': priceLte,
-      'category[in]': categoryIn,
+      'limit': 10,
+      // 'sort': sort,
+      // 'fields': fields,
+      // 'page': page,
+      if (brand != null) 'brand': brand,
+      if (categoryIn != null) 'category[in]': categoryIn,
     };
   }
 }

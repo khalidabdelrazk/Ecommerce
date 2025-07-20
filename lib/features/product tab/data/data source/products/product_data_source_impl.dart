@@ -31,9 +31,11 @@ class ProductDataSourceImpl extends ProductDataSource {
           validateStatus: (status) => true,
         ),
       );
-      GetProductsResponseDm responseData =
-          GetProductsResponseDm.fromJson(response.data);
+      print("Response from getProducts: ${response.data}");
+      
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        GetProductsResponseDm responseData =
+          GetProductsResponseDm.fromJson(response.data);
         return Right(responseData);
       }
       return Left(

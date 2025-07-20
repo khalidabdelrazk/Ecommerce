@@ -59,22 +59,22 @@ class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
 
   void fetchItems() {
     final key = selectedCategory.name ?? '';
-    if (items.containsKey(key)) {
-      emit(
-        ProductsSuccessState(
-          responseEntity: GetProductsResponseEntity(
-            data: [items[key]!],
-          ),
-        ),
-      );
-      return;
-    }
+    // if (items.containsKey(key)) {
+    //   emit(
+    //     ProductsSuccessState(
+    //       responseEntity: GetProductsResponseEntity(
+    //         data: [items[key]!],
+    //       ),
+    //     ),
+    //   );
+    //   return;
+    // }
 
     emit(ProductTabLoadingState());
 
     final getProductsRequestBody = selectedCategory.type == "Catergory"
         ? GetProductsRequestBody(categoryIn: selectedCategory.id)
-        : GetProductsRequestBody();
+        : GetProductsRequestBody(brand: selectedCategory.id);
 
     getProductsUseCase.invoke(requestBody: getProductsRequestBody).then((result) {
       result.fold(
