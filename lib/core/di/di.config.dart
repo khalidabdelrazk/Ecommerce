@@ -47,6 +47,24 @@ import '../../features/home%20tab/domain/use%20case/brands_use_case.dart'
 import '../../features/home%20tab/domain/use%20case/categories_use_case.dart'
     as _i340;
 import '../../features/home%20tab/ui/cubit/home_view_model.dart' as _i263;
+import '../../features/product%20tab/data/data%20source/products/product_data_source.dart'
+    as _i643;
+import '../../features/product%20tab/data/data%20source/products/product_data_source_impl.dart'
+    as _i257;
+import '../../features/product%20tab/data/data%20source/tabs/product_tabs_data_source.dart'
+    as _i9;
+import '../../features/product%20tab/data/data%20source/tabs/product_tabs_data_source_impl.dart'
+    as _i687;
+import '../../features/product%20tab/data/repository/product_tab_repository_impl.dart'
+    as _i842;
+import '../../features/product%20tab/domain/repository/product_tab_repository.dart'
+    as _i847;
+import '../../features/product%20tab/domain/use_case/get_categories_and_brands_use_case.dart'
+    as _i414;
+import '../../features/product%20tab/domain/use_case/get_products_use_case.dart'
+    as _i897;
+import '../../features/product%20tab/ui/cubit/product_tab_view_model.dart'
+    as _i726;
 import '../../features/root/ui/cubit/root_view_model.dart' as _i21;
 import '../api%20manager/api_manager.dart' as _i949;
 import '../network/network_info.dart' as _i932;
@@ -67,8 +85,20 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
     );
+    gh.factory<_i643.ProductDataSource>(
+      () => _i257.ProductDataSourceImpl(
+        apiManager: gh<_i949.ApiManager>(),
+        networkInfo: gh<_i932.NetworkInfo>(),
+      ),
+    );
     gh.lazySingleton<_i601.SignUpDataSource>(
       () => _i319.SignUpDataSourceImpl(
+        apiManager: gh<_i949.ApiManager>(),
+        networkInfo: gh<_i932.NetworkInfo>(),
+      ),
+    );
+    gh.factory<_i9.ProductTabsDataSource>(
+      () => _i687.ProductTabsDataSourceImpl(
         apiManager: gh<_i949.ApiManager>(),
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
@@ -85,10 +115,32 @@ extension GetItInjectableX on _i174.GetIt {
         networkInfo: gh<_i932.NetworkInfo>(),
       ),
     );
+    gh.factory<_i847.ProductTabRepository>(
+      () => _i842.ProductTabRepositoryImpl(
+        productTabsDataSource: gh<_i9.ProductTabsDataSource>(),
+        productDataSource: gh<_i643.ProductDataSource>(),
+      ),
+    );
     gh.factory<_i797.AuthenticationRepository>(
       () => _i233.AuthRepositoryImpl(
         signUpDataSource: gh<_i601.SignUpDataSource>(),
         signInDataSource: gh<_i638.SignInDataSource>(),
+      ),
+    );
+    gh.factory<_i414.GetCategoriesAndBrandsUseCase>(
+      () => _i414.GetCategoriesAndBrandsUseCase(
+        productTabRepository: gh<_i847.ProductTabRepository>(),
+      ),
+    );
+    gh.factory<_i897.GetProductsUseCase>(
+      () => _i897.GetProductsUseCase(
+        productTabRepository: gh<_i847.ProductTabRepository>(),
+      ),
+    );
+    gh.factory<_i726.ProductTabViewModel>(
+      () => _i726.ProductTabViewModel(
+        gh<_i414.GetCategoriesAndBrandsUseCase>(),
+        gh<_i897.GetProductsUseCase>(),
       ),
     );
     gh.factory<_i205.SignInUseCase>(

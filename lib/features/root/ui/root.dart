@@ -9,65 +9,72 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Root extends StatelessWidget {
-  RootViewModel viewModel = getIt<RootViewModel>();
+  RootViewModel rootViewModel = getIt<RootViewModel>();
+
 
   Root({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RootViewModel, RootStates>(
-      bloc: viewModel,
-      builder: (context, state) {
-        return Scaffold(
-          appBar: _buildAppBar(viewModel.selectedIndex, context),
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: viewModel.bodyList[viewModel.selectedIndex],
-          ),
-          bottomNavigationBar: ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(16.r),
-              topRight: Radius.circular(16.r),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => rootViewModel),
+        BlocProvider(create: (context) => rootViewModel.homeViewModel),
+        BlocProvider(create: (context) => rootViewModel.productTabViewModel),
+      ],
+      child: BlocBuilder<RootViewModel, RootStates>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: _buildAppBar(rootViewModel.selectedIndex, context),
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: rootViewModel.bodyList[rootViewModel.selectedIndex],
             ),
-            child: Container(
-              height: 90.h,
-              color: AppColors.primaryColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavItem(
-                    0,
-                    AppAssets.unSelectedHomeIcon,
-                    AppAssets.selectedHomeIcon,
-                  ),
-                  _buildNavItem(
-                    1,
-                    AppAssets.unSelectedCategoryIcon,
-                    AppAssets.selectedCategoryIcon,
-                  ),
-                  _buildNavItem(
-                    2,
-                    AppAssets.unSelectedFavouriteIcon,
-                    AppAssets.selectedFavouriteIcon,
-                  ),
-                  _buildNavItem(
-                    3,
-                    AppAssets.unSelectedAccountIcon,
-                    AppAssets.selectedAccountIcon,
-                  ),
-                ],
+            bottomNavigationBar: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r),
+              ),
+              child: Container(
+                height: 90.h,
+                color: AppColors.primaryColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildNavItem(
+                      0,
+                      AppAssets.unSelectedHomeIcon,
+                      AppAssets.selectedHomeIcon,
+                    ),
+                    _buildNavItem(
+                      1,
+                      AppAssets.unSelectedCategoryIcon,
+                      AppAssets.selectedCategoryIcon,
+                    ),
+                    _buildNavItem(
+                      2,
+                      AppAssets.unSelectedFavouriteIcon,
+                      AppAssets.selectedFavouriteIcon,
+                    ),
+                    _buildNavItem(
+                      3,
+                      AppAssets.unSelectedAccountIcon,
+                      AppAssets.selectedAccountIcon,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   Widget _buildNavItem(int index, String unselectedIcon, String selectedIcon) {
-    final isSelected = viewModel.selectedIndex == index;
+    final isSelected = rootViewModel.selectedIndex == index;
     return GestureDetector(
-      onTap: () => viewModel.bottomNavOnTap(index),
+      onTap: () => rootViewModel.bottomNavOnTap(index),
       behavior: HitTestBehavior.opaque,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10.h),

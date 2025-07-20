@@ -1,4 +1,3 @@
-import 'package:ecommerce/core/di/di.dart';
 import 'package:ecommerce/core/helpers/spacing.dart';
 import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/app_styles.dart';
@@ -6,44 +5,40 @@ import 'package:ecommerce/features/home%20tab/ui/cubit/home_view_model.dart';
 import 'package:ecommerce/features/home%20tab/ui/widgets/brands_bar.dart';
 import 'package:ecommerce/features/home%20tab/ui/widgets/category_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeTab extends StatefulWidget {
-  const HomeTab({super.key});
+  final HomeViewModel viewModel;
+  const HomeTab({super.key, required this.viewModel});
 
   @override
   State<HomeTab> createState() => _HomeTabState();
 }
 
 class _HomeTabState extends State<HomeTab> {
-  late HomeViewModel viewModel = getIt<HomeViewModel>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => viewModel,
-      child: Scaffold(
-        backgroundColor: AppColors.whiteColor,
-        body: CustomScrollView(
-          slivers: [
-            SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  verticalSpacing(20),
-                  _buildAnnouncement(images: viewModel.images),
-                  verticalSpacing(20),
-                  _titleAndViewAll(title: "Categories"),
-                  CategoryBar(homeViewModel: viewModel),
-                  verticalSpacing(20),
-                  _titleAndViewAll(title: "Brands"),
-                  BrandsBar(homeViewModel: viewModel),
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: AppColors.whiteColor,
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                verticalSpacing(20),
+                _buildAnnouncement(images: widget.viewModel.images),
+                verticalSpacing(20),
+                _titleAndViewAll(title: "Categories"),
+                CategoryBar(homeViewModel: widget.viewModel),
+                verticalSpacing(20),
+                _titleAndViewAll(title: "Brands"),
+                BrandsBar(homeViewModel: widget.viewModel),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
