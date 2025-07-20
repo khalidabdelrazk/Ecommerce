@@ -1,87 +1,119 @@
+import 'package:ecommerce/features/product%20tab/domain/entity/get_products_request_body.dart';
+import 'package:ecommerce/features/product%20tab/domain/entity/get_products_response_entity.dart';
 import 'package:ecommerce/features/product%20tab/domain/entity/product_tabs_response_entity.dart';
 import 'package:ecommerce/features/product%20tab/domain/use_case/get_categories_and_brands_use_case.dart';
+import 'package:ecommerce/features/product%20tab/domain/use_case/get_products_use_case.dart';
 import 'package:ecommerce/features/product%20tab/ui/cubit/product_tab_states.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:injectable/injectable.dart';
-
 @injectable
 class ProductTabViewModel extends HydratedCubit<ProductTabStates> {
   final GetCategoriesAndBrandsUseCase getCategoriesAndBrandsUseCase;
-  ProductTabViewModel(this.getCategoriesAndBrandsUseCase)
-      : super(ProductTabInitialState());
+  final GetProductsUseCase getProductsUseCase;
+  ProductTabViewModel(
+    this.getCategoriesAndBrandsUseCase,
+    this.getProductsUseCase,
+  ) : super(ProductTabInitialState());
 
-  String selectedCategory = '';
-  List<String> items = [];
-  List<CategoryAndBrandsEntity> categories2 = [];
+  CategoryAndBrandsEntity selectedCategory = CategoryAndBrandsEntity();
+  List<CategoryAndBrandsEntity> categories = [];
   bool isHidden = false;
+  Map<String, ProductEntity> items = {};
 
-  /// Toggle Category Sidebar Visibility
   void toggleVisibility() {
     isHidden = !isHidden;
     emit(ProductTabInitialState());
   }
 
-  /// Select Category and Fetch its Items
-  void selectCategory(String category) {
+  void selectCategory(CategoryAndBrandsEntity category) {
     if (selectedCategory == category) return;
     selectedCategory = category;
-    emit(CategorySelectedState(selectedCategory));
+    emit(CategorySelectedState(selectedCategory.name ?? ''));
     fetchItems();
   }
 
-  /// Fetch Categories and Brands (only if not cached)
   void getCategoriesAndBrands() {
-    if (categories2.isNotEmpty) {
-      emit(ProductTabsSuccessState(
-        responseEntity: ProductTabsResponseEntity(data: categories2),
-      ));
+    if (categories.isNotEmpty) {
+      emit(
+        ProductTabsSuccessState(
+          responseEntity: ProductTabsResponseEntity(data: categories),
+        ),
+      );
       return;
     }
 
     emit(ProductTabLoadingState());
     getCategoriesAndBrandsUseCase.invoke().then((result) {
       result.fold(
-        (failure) => emit(ProductTabsErrorState(failures: failure)),
+        (failure) => emit(ProductsErrorState(failures: failure)),
         (response) {
-          categories2 = (response.data ?? []).cast<CategoryAndBrandsEntity>();
-          selectedCategory = categories2.isNotEmpty ? categories2.first.name ?? '' : '';
+          categories = (response.data ?? []).cast<CategoryAndBrandsEntity>();
+          selectedCategory = categories.isNotEmpty
+              ? categories.first
+              : CategoryAndBrandsEntity();
           emit(ProductTabsSuccessState(responseEntity: response));
         },
       );
     });
   }
 
-  /// Fake Items Fetching based on Category
   void fetchItems() {
-    items = List.generate(10, (index) => '$selectedCategory Item $index');
+    final key = selectedCategory.name ?? '';
+    if (items.containsKey(key)) {
+      emit(
+        ProductsSuccessState(
+          responseEntity: GetProductsResponseEntity(
+            data: [items[key]!],
+          ),
+        ),
+      );
+      return;
+    }
+
+    emit(ProductTabLoadingState());
+
+    final getProductsRequestBody = selectedCategory.type == "Catergory"
+        ? GetProductsRequestBody(categoryIn: selectedCategory.id)
+        : GetProductsRequestBody();
+
+    getProductsUseCase.invoke(requestBody: getProductsRequestBody).then((result) {
+      result.fold(
+        (failure) => emit(ProductTabsErrorState(failures: failure)),
+        (response) {
+          if (response.data != null && response.data!.isNotEmpty) {
+            items[key] = response.data!.first;
+          }
+          emit(ProductsSuccessState(responseEntity: response));
+        },
+      );
+    });
   }
 
-  /// Persist Data
   @override
   Map<String, dynamic>? toJson(ProductTabStates state) {
-    if (categories2.isNotEmpty) {
-      return {
-        'categories': categories2.map((e) => e.toJson()).toList(),
-        'selectedCategory': selectedCategory,
-        'isHidden': isHidden,
-      };
-    }
-    return null;
+    return {
+      'categories': categories.map((e) => e.toJson()).toList(),
+      'selectedCategory': selectedCategory.toJson(),
+      'isHidden': isHidden,
+      'items': items.map((key, value) => MapEntry(key, value.toJson())),
+    };
   }
 
   @override
   ProductTabStates? fromJson(Map<String, dynamic> json) {
     try {
-      final cachedCategories = (json['categories'] as List)
+      categories = (json['categories'] as List)
           .map((e) => CategoryAndBrandsEntity.fromJson(e))
           .toList();
 
-      categories2 = cachedCategories;
-      selectedCategory = json['selectedCategory'] ?? '';
+      selectedCategory = CategoryAndBrandsEntity.fromJson(json['selectedCategory']);
       isHidden = json['isHidden'] ?? false;
 
+      final itemsMap = (json['items'] as Map<String, dynamic>?) ?? {};
+      items = itemsMap.map((key, value) => MapEntry(key, ProductEntity.fromJson(value)));
+
       return ProductTabsSuccessState(
-        responseEntity: ProductTabsResponseEntity(data: categories2),
+        responseEntity: ProductTabsResponseEntity(data: categories),
       );
     } catch (_) {
       return null;

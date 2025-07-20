@@ -29,7 +29,8 @@ class _ProductTabState extends State<ProductTab> {
       backgroundColor: AppColors.whiteColor,
       body: BlocBuilder<ProductTabViewModel, ProductTabStates>(
         builder: (context, state) {
-          if (state is ProductTabsSuccessState || widget.productTabViewModel.categories2.isNotEmpty) {
+          if (state is ProductTabsSuccessState ||
+              widget.productTabViewModel.categories.isNotEmpty) {
             return Stack(
               children: [
                 Row(
@@ -38,22 +39,29 @@ class _ProductTabState extends State<ProductTab> {
                       SizedBox(
                         width: 137.w,
                         child: CategoryTabs(
-                          categories: widget.productTabViewModel.categories2,
-                          selectedCategory: widget.productTabViewModel.selectedCategory,
+                          categories: widget.productTabViewModel.categories,
+                          selectedCategory:
+                              widget
+                                  .productTabViewModel
+                                  .selectedCategory
+                                  .name ??
+                              "",
                           // onCategorySelected: widget.productTabViewModel.selectCategory,
                           // onDoubleTap: widget.productTabViewModel.toggleVisibility,
                           productTabViewModel: widget.productTabViewModel,
                         ),
                       ),
                     Expanded(
-                      child: CategoryItems(productTabViewModel: widget.productTabViewModel),
+                      child: CategoryItems(
+                        productTabViewModel: widget.productTabViewModel,
+                      ),
                     ),
                   ],
                 ),
                 if (widget.productTabViewModel.isHidden)
                   Positioned(
                     left: 0,
-                    bottom: 100.h,
+                    top: 0,
                     child: GestureDetector(
                       onTap: widget.productTabViewModel.toggleVisibility,
                       child: Container(
@@ -64,7 +72,7 @@ class _ProductTabState extends State<ProductTab> {
                         ),
                         child: const Icon(
                           Icons.arrow_forward_ios,
-                          color: Colors.white,
+                          color: AppColors.whiteColor,
                         ),
                       ),
                     ),
@@ -75,7 +83,8 @@ class _ProductTabState extends State<ProductTab> {
             return NetworkErrorWidget(
               errorMsg: state.failures.errorMessage,
               large: true,
-              onTap: () async => widget.productTabViewModel.getCategoriesAndBrands(),
+              onTap: () async =>
+                  widget.productTabViewModel.getCategoriesAndBrands(),
             );
           } else {
             return const Center(child: CircularProgressIndicator());

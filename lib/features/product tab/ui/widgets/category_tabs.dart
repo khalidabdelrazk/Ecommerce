@@ -41,10 +41,10 @@ class CategoryTabs extends StatelessWidget {
           final category = categories[index];
           final isSelected = selectedCategory == category.name;
           return GestureDetector(
-            onTap: () => productTabViewModel.selectCategory(category.name ?? ''),
+            onTap: () => productTabViewModel.selectCategory(category),
             onDoubleTap: productTabViewModel.toggleVisibility,
             child: Container(
-              color: isSelected ? Colors.white : Colors.transparent,
+              color: isSelected ? AppColors.whiteColor : AppColors.transparentColor,
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
               child: Row(
                 children: [

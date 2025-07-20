@@ -2,8 +2,6 @@ import 'package:ecommerce/core/di/di.dart';
 import 'package:ecommerce/core/helpers/app_assets.dart';
 import 'package:ecommerce/core/utils/app_colors.dart';
 import 'package:ecommerce/core/utils/app_styles.dart';
-import 'package:ecommerce/features/home%20tab/ui/cubit/home_view_model.dart';
-import 'package:ecommerce/features/product%20tab/ui/cubit/product_tab_view_model.dart';
 import 'package:ecommerce/features/root/ui/cubit/root_states.dart';
 import 'package:ecommerce/features/root/ui/cubit/root_view_model.dart';
 import 'package:flutter/material.dart';
