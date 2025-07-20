@@ -32,10 +32,13 @@ class ProductDataSourceImpl extends ProductDataSource {
         ),
       );
       print("Response from getProducts: ${response.data}");
+      print("Response from getProducts: ${response.data['data'].length} items");
       
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         GetProductsResponseDm responseData =
           GetProductsResponseDm.fromJson(response.data);
+        print("Response from getProducts: ${responseData.data?.length ?? 1} items");
+
         return Right(responseData);
       }
       return Left(

@@ -33,13 +33,14 @@ class MetadataProductResponse extends MetadataCategoriesOrBrandsResponseEntity{
 
 class ProductEntity {
   final String? id;
+  final String? title;
   final String? description;
   final int? price;
   final String? imageCover;
   final List<String>? images;
   final double? ratingsAverage;
 
-  ProductEntity({
+  ProductEntity({this.title, 
     this.id,
     this.description,
     this.price,

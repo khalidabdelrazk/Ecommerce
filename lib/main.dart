@@ -18,6 +18,7 @@ void main() async {
         ? HydratedStorageDirectory.web
         : HydratedStorageDirectory((await getTemporaryDirectory()).path),
   );
+  await HydratedBloc.storage.clear();
   runApp(const MyApp());
 }
 

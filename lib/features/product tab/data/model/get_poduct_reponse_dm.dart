@@ -39,7 +39,6 @@ class Metadata extends MetadataProductResponse{
 }
 
 class ProductDm extends ProductEntity {
-  final String? title;
   final String? slug;
   final int? quantity;
   final int? ratingsQuantity;
@@ -52,7 +51,7 @@ class ProductDm extends ProductEntity {
 
   ProductDm({
     super.id,
-    this.title,
+    super.title,
     this.slug,
     super.description,
     super.price,

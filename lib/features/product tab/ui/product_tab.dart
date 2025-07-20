@@ -30,7 +30,7 @@ class _ProductTabState extends State<ProductTab> {
       body: BlocBuilder<ProductTabViewModel, ProductTabStates>(
         builder: (context, state) {
           if (state is ProductTabsSuccessState ||
-              widget.productTabViewModel.categories.isNotEmpty) {
+              widget.productTabViewModel.categories.length > 1) {
             return Stack(
               children: [
                 Row(
