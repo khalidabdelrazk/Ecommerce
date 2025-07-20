@@ -24,6 +24,7 @@ class AppAssets {
       "assets/icons/favourite_selected.png";
   static const String starIcon = "assets/icons/star.png";
   static const String routeLogo = "assets/icons/route_logo.png";
+  static const String route = "assets/icons/route.png";
   static const String shoppingCart = "assets/icons/shopping_cart.png";
 
   // Announcements Images
@@ -49,4 +50,7 @@ class AppAssets {
   static const String shoesItemImage3 = "assets/images/items/shoes-3.png";
 
   static const String appBarLeading = 'assets/images/Route.png';
+
+  // Splash Screen
+  static const String splashScreenImage = "assets/images/Splash Screen.png";
 }
